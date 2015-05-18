@@ -1,5 +1,5 @@
 <?php
-print_r($posts)
+print_r($categories)
 ?>
 
 
@@ -12,6 +12,7 @@ print_r($posts)
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th></th>
         <th>Created</th>
         <th>Modified</th>
     </tr>
@@ -27,7 +28,17 @@ print_r($posts)
         <td>
             <?php echo $this->Html->link($category['Category']['name'], array('action' => 'view', $category['Category']['id'])); ?>
         </td>
-   
+        <td>
+            <?php echo $this->Form->postLink('Delete', array('action' => 'delete', $category['Category']['id']), array('confirm' => 'Are you sure?'));
+            ?>
+            <?php // echo $this->Html->link('Edit', array('action' => 'edit', $post['Post']['id'])); ?>
+        </td>
+        <td>
+            <?php echo $category['Category']['created'];  ?>
+        </td>   
+        <td>
+            <?php echo $category['Category']['modified'];  ?>
+        </td>   
    
 
 <?php endforeach; ?>
