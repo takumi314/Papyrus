@@ -11,9 +11,24 @@ class CategoriesController extends AppController {
         $this->set('categories', $this->Category->find('all'));   // １番目の'cagtegories'は「View」内での変数名に、２番目の部分は実際のデータのデータとなる。
     }                                                             // モデルクラスが 'category' なので、アクション内の$this->Category->find('all') という記述によってモデルにアクセスする。
 
+
+     public function view($id = null) {
+        if (!$id) {
+            throw new NotFoundException(__('Invalid category'));
+        }
+
+        $category = $this->Category->findById($id);
+        if (!$category) {
+            throw new NotFoundException(__('Invalid category'));
+        }
+        $this->set('category', $category);
+    }
+
+
+
     //カテゴリーの追加を実行する処理を担う
     public function add() {
-        if ($this->request->is('post')) {                           // CakeRequestクラスの機能へアクセスするための入り口、
+        if ($this->request->is('post')) {                           // CakeRequestクラスの機能へアクセスするための入り口、idメソットでpost送信を用いる。
             $this->Category->create();
             if ($this->Category->save($this->request->data)) {
                 $this->Session->setFlash(__('Your Category has been saved.'));
@@ -22,6 +37,35 @@ class CategoriesController extends AppController {
             $this->Session->setFlash(__('Unable to add your Category.'));
         }
     }
+
+
+    public function edit($id = null) {
+    if (!$id) {
+        throw new NotFoundException(__('Invalid category'));
+    }
+
+    $category = $this->Category->findById($id);                     // ModelのCategoryクラスから$idを呼び出して、$categoryに代入する。
+    if (!$category) {
+        throw new NotFoundException(__('Invalid category'));
+    }
+
+    if ($this->request->is(array('category', 'put'))) {
+        $this->Category->id = $id;
+        if ($this->Category->save($this->request->data)) {
+    //var_dump($this->request->data);
+            $this->Session->setFlash(__('Your category has been updated.'));
+       
+        }
+        $this->Session->setFlash(__('Unable to update your category.'));
+    }
+
+        if (!$this->request->data) {
+            $this->request->data = $category;
+        }
+
+    }
+
+
 
 
     public function delete($id) {

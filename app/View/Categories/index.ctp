@@ -12,7 +12,6 @@ print_r($categories)
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <th></th>
         <th>Created</th>
         <th>Modified</th>
     </tr>
@@ -31,7 +30,7 @@ print_r($categories)
         <td>
             <?php echo $this->Form->postLink('Delete', array('action' => 'delete', $category['Category']['id']), array('confirm' => 'Are you sure?'));
             ?>
-            <?php // echo $this->Html->link('Edit', array('action' => 'edit', $post['Post']['id'])); ?>
+            <?php echo $this->Html->link('Edit', array('action' => 'edit', $category['Category']['id'])); ?>
         </td>
         <td>
             <?php echo $category['Category']['created'];  ?>
