@@ -74,8 +74,19 @@ class PostsController extends AppController {
     }
 
     return $this->redirect(array('action' => 'index'));
-}
+    
+    }
 
+    public function category_index($category_id = null) {
+        // set(); 'posts'という名前でViewにとばす処理を行う。
+        $posts = $this->Post->find('all', array('conditions' => array('category_id' => $category_id)));        
+        
+        $this->set(compact('posts'));       // 上記の$postとcompact('posts')が関連付けされる。
+
+    }
+
+
+    
 
 }
 

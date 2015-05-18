@@ -11,6 +11,7 @@ print_r($posts)
     <tr>
         <th>Id</th>
         <th>Title</th>
+        <th>Category</th>
         <th>Action</th>
         <th>Created</th>
     </tr>
@@ -25,6 +26,8 @@ print_r($posts)
         <td>
             <?php echo $this->Html->link($post['Post']['title'], array('action' => 'view', $post['Post']['id'])); ?>
         </td>
+        <?php debug($post); ?>
+        <td><?php echo $this->Html->Link($post['Category']['name'], array('action' => 'category_index', $post['Post']['category_id'])); ?></td>
 	<td>
             <?php echo $this->Form->postLink(
                 'Delete',
