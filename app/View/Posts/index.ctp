@@ -28,7 +28,7 @@
         </td>
         <?php //debug($post); ?>
         <td><?php echo $this->Html->Link($post['Category']['name'], array('controller' => 'posts', 'action' => 'category_index', $post['Post']['category_id'])); ?></td>   
-        <!--  ['controller' => 'posts']の部分は、この場合は省略が可能。  -->
+        <!--  ['controller' => 'posts']の部分は、この場合は省略が可能。 また、URLを作る情報がつまっている配列。  -->
 	<td>
             <?php echo $this->Form->postLink(
                 'Delete',
