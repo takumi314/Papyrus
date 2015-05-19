@@ -3,6 +3,7 @@ class PostsController extends AppController {
     
     public $helpers = array('Html', 'Form', 'Session');
     public $components = array('Session');
+    public $uses = array('Post','Category');        // POSTモデルとCategoryモデルを指定する。
 
 
     public function index() {
@@ -80,8 +81,10 @@ class PostsController extends AppController {
     public function category_index($category_id = null) {
         // set(); 'posts'という名前でViewにとばす処理を行う。
         $posts = $this->Post->find('all', array('conditions' => array('category_id' => $category_id)));        
-        
-        $this->set(compact('posts'));       // 上記の$postとcompact('posts')が関連付けされる。
+        $categories = $this->Category->find('first', array('conditions' => array('id' => $category_id)));
+      //$categories = $this->Category->findById($category_id);    // どちらでもOK!!
+
+        $this->set(compact('posts','categories'));       // 上記の$postとcompact('posts')が関連付けされる。
 
     }
 

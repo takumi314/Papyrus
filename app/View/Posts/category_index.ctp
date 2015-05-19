@@ -1,16 +1,20 @@
 <?php
-//print_r($posts)
+print_r($posts)
 ?>
 
 
 <!-- File: /app/View/Post/index.ctp  (編集リンクを追加済み) -->
 
-<h1>Blog posts</h1>
-<p><?php  echo $this->Html->link("Add Post", array('action' => 'add')); ?></p>
+<h1>Blog categories</h1>
+
+<h1><?php  echo  $categories['Category']['name']; ?></h1>
+
+<p><?php echo $this->Html->link("Add Post", array('action' => 'add')); ?></p>
+<p><?php echo $this->Html->link("Index", array('action' => 'index')); ?></p>
 <table>
     <tr>
         <th>Id</th>
-        <th>Title</th>
+        <th>Title</th> 
         <th>Category</th>
         <th>Action</th>
         <th>Created</th>
@@ -26,9 +30,7 @@
         <td>
             <?php echo $this->Html->link($post['Post']['title'], array('action' => 'view', $post['Post']['id'])); ?>
         </td>
-        <?php //debug($post); ?>
-        <td><?php echo $this->Html->Link($post['Category']['name'], array('controller' => 'posts', 'action' => 'category_index', $post['Post']['category_id'])); ?></td>   
-        <!--  ['controller' => 'posts']の部分は、この場合は省略が可能。  -->
+        <td><?php echo $post['Category']['name']; ?></td>
 	<td>
             <?php echo $this->Form->postLink(
                 'Delete',
