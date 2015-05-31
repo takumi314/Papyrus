@@ -4,7 +4,7 @@
 class UsersController extends AppController {
 
     public function beforeFilter() {
-        parent::beforeFilter();
+        parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
         $this->Auth->allow('add', 'login');
     }
@@ -26,7 +26,7 @@ class UsersController extends AppController {
     public function add() {
         if ($this->request->is('post')) {
             $this->User->create();
-            if ($this->User->save($this->request->data)) {
+            if ($this->User->save($this->request->data)) {                  
                 $this->Session->setFlash(__('The user has been saved'));
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -73,17 +73,18 @@ class UsersController extends AppController {
 
     public function login() {
        if ($this->request->is('post')) {
-       if ($this->Auth->login()) {
-            $this->redirect($this->Auth->redirect());
-        } else {
-            $this->Session->setFlash(__('Invalid username or password, try again'));
+            if ($this->Auth->login()) {
+                $this->redirect($this->Auth->redirect());
+            } else {
+                $this->Session->setFlash(__('Invalid username or password, try again'));
+            }
         }
     }
-}
 
-public function logout() {
-    $this->redirect($this->Auth->logout());
-}
+    public function logout() {
+        $this->Auth->logout();
+        $this->redirect('/users/login');
+    }
 
 
 
