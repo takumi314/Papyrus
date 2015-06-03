@@ -38,6 +38,8 @@ class PostsController extends AppController {
     public function add() {
         if ($this->request->is('post')) {       // リクエストが HTTP or POST かどうかの確認にCakeRequest::is()メソッドを使用している。
             $this->request->data['Post']['user_id'] = $this->Auth->user('id'); //Added this line
+            //$this->set('categories_list',$this->Category->find['list']);
+            var_dump($this->Category->find['list']);
             if ($this->Post->save($this->request->data)) {                  
                 // ユーザがフォームを使ってデータをPOSTした場合、その情報は、$this->request->data の中に入る。 
                 $this->Session->setFlash(__('Your post has been saved.'));
@@ -63,7 +65,7 @@ class PostsController extends AppController {
             $this->Post->id = $id;
 
             if ($this->Post->save($this->request->data)) {                      // 
-    	       var_dump($this->request->data);
+    	       //var_dump($this->request->data);
                 $this->Session->setFlash(__('Your post has been updated.'));
                 return $this->redirect(array('action' => 'index'));
             }
