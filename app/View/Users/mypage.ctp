@@ -1,6 +1,6 @@
 
 
-<!-- app/View/Users/add.ctp -->
+<!-- app/View/Users/register.ctp -->
 <div class="container">
 
 	<div class="page-header">
