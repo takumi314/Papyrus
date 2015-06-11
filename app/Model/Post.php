@@ -8,6 +8,18 @@ class Post extends AppModel {
     }
 
 
+    //検索のために追加
+    public $actsAs = array('Search.Searchable');
+	
+	public $filterArgs = array(
+			'keyword' => array('type'=>'like','field'=>array('Post.title','Post.body')),
+		);
+
+
+
+    
+
+
 }
 
 ?>
