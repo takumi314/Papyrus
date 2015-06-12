@@ -1,21 +1,15 @@
 <?php
 
-// app/Controller/UsersController.php
+// app/Controller/FavoritesController.php
 class UsersController extends AppController {
 
-    public function beforeFilter() {
-        parent::beforeFilter();                         // 
-    // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('add', 'login');
-    }
-
-
-    public function index() {
+   
+    public function favorite() {
         $this->User->recursive = 0;                     // [ ->recursive ]
         $this->set('users', $this->paginate());
     }
 
-    public function view($id = null) {
+    public function favorite_view($id = null) {
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
@@ -35,23 +29,6 @@ class UsersController extends AppController {
         }
     }
 
-    public function edit($id = null) {
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-            }
-        } else {
-            $this->request->data = $this->User->read(null, $id);
-            unset($this->request->data['User']['password']);
-        }
-    }
 
     public function delete($id = null) {
         $this->request->onlyAllow('post');
@@ -68,28 +45,25 @@ class UsersController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
+//    public function edit($id = null) {
+//        $this->User->id = $id;
+//        if (!$this->User->exists()) {
+//            throw new NotFoundException(__('Invalid user'));
+//        }
+//        if ($this->request->is('post') || $this->request->is('put')) {
+//            if ($this->User->save($this->request->data)) {
+//                $this->Session->setFlash(__('The user has been saved'));
+//                $this->redirect(array('action' => 'index'));
+//            } else {
+//                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+//            }
+//        } else {
+//            $this->request->data = $this->User->read(null, $id);
+//            unset($this->request->data['User']['password']);
+//        }
+//    }
 
- 
-
-    public function login() {
-       if ($this->request->is('post')) {
-            if ($this->Auth->login()) {
-                $this->redirect($this->Auth->redirect());
-            } else {
-                $this->Session->setFlash(__('Invalid username or password, try again'));
-            }
-        }
-    }
-
-    public function logout() {
-        $this->Auth->logout();
-        $this->redirect('/users/login');
-    }
-
-
-
-
-
+    
 
 
 }

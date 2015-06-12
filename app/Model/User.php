@@ -22,20 +22,27 @@ class User extends AppModel {
         'username' => array(                                // username項目にルールを設定する。
             'required' => array(                            // 
                 'rule' => array('notEmpty'),                // 'rule' => array('notEmpty')
-                'message' => 'A username is required'       // もしも false が返される場合には「A username is required」というメッセージが返される。 
+                'message' => 'ユーザー名を入力して下さい。'       // もしも false が返される場合には「A username is required」というメッセージが返される。 
             )
         ),
         'password' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'A password is required'
+                'message' => 'パスワードを入力して下さい。'
             )
         ),
-        'role' => array(
-            'valid' => array(
-                'rule' => array('inList', array('admin', 'author')),
-                'message' => 'Please enter a valid role',
-                'allowEmpty' => false　                     // false にする場合、値は nonempty または !empty($value) || is_numeric($value) と同義。 
+//        'role' => array(
+//            'valid' => array(
+//                'rule' => array('inList', array('admin', 'author')),
+//                'message' => 'Please enter a valid role',
+//               'allowEmpty' => false　                     // false にする場合、値は nonempty または !empty($value) || is_numeric($value) と同義。 
+//            )
+//          )
+        
+        'date' => array(                                    // date項目にルールを設定する。
+            'required' => array(
+                'rule' => array('notEmpty'),
+                'message' => '初めてセブに来た時期を選択して下さい。'
             )
         )
     );

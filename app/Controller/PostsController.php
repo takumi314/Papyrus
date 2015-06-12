@@ -3,7 +3,7 @@ class PostsController extends AppController {
     
     public $helpers = array('Html', 'Form', 'Session');
     public $components = array('Session','Search.Prg');     //Prgコンポーネントを読み込む。
-    public $uses = array('Post','Category');        // POSTモデルとCategoryモデルを指定する。
+    public $uses = array('Post','Category','Afterlook');        // POSTモデルとCategoryモデルを指定する。
     public $presetVars = true;                      // Prgコンポーネントのメソッドで利用される変数の事前設定
 
     public function index() {
@@ -139,7 +139,7 @@ class PostsController extends AppController {
         
         if (isset($this->passedArgs['search_word'])) {
         //条件を生成
-            $conditions = $this->Post->parseCriteria($this->passedArgs);
+            $conditions = $this->Post->parseCriteria($this->passedArgs);        // 
 
             $this->paginate = array(  
                 'conditions' => $conditions,  
@@ -147,8 +147,11 @@ class PostsController extends AppController {
                 'order' => array(
                 'id' => 'desc'
                 )
+
+            posts
+
             );
-            $this->set('data', $this->paginate('Post'));
+            $this->set(compact('data', $this->paginate('Post')));
         }
     }
 

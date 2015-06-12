@@ -4,19 +4,7 @@
               <div class="tab-pane active" id="home">
                 <a href="index.html"><img src="images/background.jpg" alt="Image" style="max-width: 780px; height: auto;"></a>
               </div>
-              <div class="tab-pane" id="food">
-                <a href="food.html"><img src="images/DSC05821.JPG" alt="Image" style="max-width: 780px; height: auto;"></a>
-              </div>
-              <div class="tab-pane" id="activity">
-                <a href="activity.html"><img src="" alt="Image"></a>
-              </div>
-              <div class="tab-pane" id="local">
-                <a href="local.html"><img src="" alt="Image"></a>
-              </div>
-              <div class="tab-pane" id="life">
-                <a href="life.html"><img src="" alt="Image"></a>
-              </div>
-
+              
 
                 <ul>
                     <li class="current ">

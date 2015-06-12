@@ -31,7 +31,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->css('cake.generic');
 
 		echo $this->Html->css('cooking');
-		//echo $this->Html->css('bootstrap_min');
+		echo $this->Html->css('bootstrap_min');
 		
 		// jQuery CDN
         echo $this->Html->script('//code.jquery.com/jquery-1.10.2.min.js');
@@ -57,6 +57,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     			<div class="navbar-header">
 			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar">グルメ</span>
 			        <span class="icon-bar">アクティビティ</span>
 			        <span class="icon-bar">ローカル</span>
 			        <span class="icon-bar">生活・留学</span>
@@ -69,9 +70,18 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		      <ul class=" nav navbar-nav">
 		        <li class="active"><a href="">Home<span class="sr-only">(current)</span></a></li>
 		        <li><a href="category#1">グルメ</a></li>
-		        <li><a href="category#1">アクティビティ</a></li>
-		        <li><a href="category#2">ローカル</a></li>
-				<li><a href="category#3">生活・留学</a></li>		    
+		        <li><a href="category#2">アクティビティ</a></li>
+		        <li><a href="category#3">ローカル</a></li>
+				<li><a href="category#4">生活・留学</a></li>		    
+		      	<?php //foreach ($Categories as $category): ?>
+					<!-- <li> -->
+						<?php //echo $this->Html->Link($category['Category']['name'], array('controller' => 'Categories', 'action' => 'category', $$category['Post']['category_id'])); ?>
+					<!-- </li> -->
+				<?php //endforeach; ?>
+
+
+
+
 		      </ul>
 
 			  <!--  <p>navbar-form navbar-left search-logo</p> -->
@@ -86,17 +96,18 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 			    <ul class="nav navbar-nav navbar-right" >
 			        <li style="margin-top: 6px;"><h5 style="height: 30px; width: 200px; ">ようこそ <?php echo 'ゲストorユーザー名'  ; ?> さん</h5></li>
-			        <li><a href="#">投稿する<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+			        <li><a href="Posts/add.ctp">投稿する<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
 			        <li class="dropdown">
 			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="searchbtn">
 			        		<img src="" style=""><?php echo 'ユーザー名';?><span class="caret" ></span>
 			        	</a>
 			        	<ul class="dropdown-menu" role="menu">
-				            <li><a href="#">Sign in</a></li>
-				            <li><a href="#">お気に入り</a></li>
-				            <li><a href="#">編集・削除</a></li>
+				            <!-- <li><a href="">Login</a></li> -->
+				            <li><?php echo $this->Html->link("Login", array('action' => 'login')); ?></li>
+				            <li><?php echo $this->Html->link("お気に入り", array('action' => 'favorites#')); ?></li>  
+				            <li><?php echo $this->Html->link("編集・削除", array('action' => 'edit')); ?></li>
 				            <li class="divider"></li>
-				            <li><a href="#">Sign out</a></li>
+				            <li><?php echo $this->Html->link("Logout", array('action' => 'logout')); ?></li>
 			          	</ul>
 			        </li>
 			    </ul>
@@ -298,7 +309,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<!-- 後で見る -->
 				<h3>後で見る</h3>
 				
-				<?php echo $this->Element('AfterLook'); ?>				
+				<?php echo $this->Element('afterlook'); ?>				
 
 			</div>
 
@@ -306,14 +317,14 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<!-- <h3>最新の記事</h3> -->
 				<h3>最新の記事</h3>
 
-				<?php echo $this->Element('Latest5Post'); ?>
+				<?php echo $this->Element('latest5post'); ?>
 		
 			</div>
 			<div>
 				<!-- 注目の記事 -->
 				<h3>注目の記事</h3>
 				
-				<?php echo $this->Element('Popular5Post'); ?>
+				<?php echo $this->Element('popular5post'); ?>
 
 			</div>
 

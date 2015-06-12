@@ -1,6 +1,6 @@
 <ul id="featured">
 	<li>
-		<a href="recipes.html"><img src="/papyrus/images/sandwich.jpg" alt="Image"></a>
+		<a href=""><img src="/papyrus/images/sandwich.jpg" alt="Image"></a>
 		<div>
 			<h2><a href="recipes.html">Ham Sandwich</a></h2>
 			<span>by: Anna</span>
@@ -24,3 +24,5 @@
 		</div>
 	</li>
 </ul>
+
+
