@@ -31,7 +31,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->css('cake.generic');
 
 		echo $this->Html->css('cooking');
-		echo $this->Html->css('bootstrap_min');
+		//echo $this->Html->css('bootstrap_min');
 		
 		// jQuery CDN
         echo $this->Html->script('//code.jquery.com/jquery-1.10.2.min.js');
@@ -53,7 +53,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		
 			<nav id="header" class="navbar navbar-default" style="position: fixed; width:1380px;">
 			
-    <!-- Brand and toggle get grouped for better mobile display -->
+    				<!-- Brand and toggle get grouped for better mobile display -->
     			<div class="navbar-header">
 			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 			        <span class="sr-only">Toggle navigation</span>
@@ -62,17 +62,23 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			        <span class="icon-bar">ローカル</span>
 			        <span class="icon-bar">生活・留学</span>
 			      </button>
-      				<a class="navbar-brand " href="">Papyrus</a>
+      				<!-- <a class="navbar-brand " href="">Papyrus</a> -->
+      				<?php echo $this->Html->link('Papyrus', array('controller' => 'posts', 'action' => 'index'), array('class'=>'navbar-brand')) ; ?>
     			</div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class=" nav navbar-nav">
-		        <li class="active"><a href="">Home<span class="sr-only">(current)</span></a></li>
-		        <li><a href="category#1">グルメ</a></li>
-		        <li><a href="category#2">アクティビティ</a></li>
-		        <li><a href="category#3">ローカル</a></li>
-				<li><a href="category#4">生活・留学</a></li>		    
+		      	<li class="active">
+		      		<?php echo $this->Html->link("Home", array('controller' => 'posts', 'action' => 'index')); ?>
+		      		<span class="sr-only">(current)</span>
+		      	</li>
+		        <li><?php echo $this->Html->link("グルメ", array('controller' => 'categories', 'action' => 'category', 1 )); ?></li>
+		        <li><?php echo $this->Html->link("アクティビティ", array('controller' => 'categories', 'action' => 'category', 2 )); ?></li>
+		        <li><?php echo $this->Html->link("ローカル", array('controller' => 'categories', 'action' => 'category', 3 )); ?></li>
+		        <li><?php echo $this->Html->link("生活・留学留学", array('controller' => 'categories', 'action' => 'category', 4 )); ?></li>
+		        				
+		       	<!-- <li><a href="category#4">生活・留学</a></li> -->		    
 		      	<?php //foreach ($Categories as $category): ?>
 					<!-- <li> -->
 						<?php //echo $this->Html->Link($category['Category']['name'], array('controller' => 'Categories', 'action' => 'category', $$category['Post']['category_id'])); ?>
@@ -95,19 +101,22 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 			    <ul class="nav navbar-nav navbar-right" >
-			        <li style="margin-top: 6px;"><h5 style="height: 30px; width: 200px; ">ようこそ <?php echo 'ゲストorユーザー名'  ; ?> さん</h5></li>
-			        <li><a href="Posts/add.ctp">投稿する<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+			        <li style="margin-top: 6px;"><h5 style="height: 30px; width: 200px; ">ようこそ <?php echo 'ゲスト';//$user[User][name]; ?> さん</h5></li>
+			        <li><?php echo $this->Html->link("投稿する", array('controller' => 'posts', 'action' => 'add')); ?><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></li>
 			        <li class="dropdown">
 			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="searchbtn">
 			        		<img src="" style=""><?php echo 'ユーザー名';?><span class="caret" ></span>
 			        	</a>
 			        	<ul class="dropdown-menu" role="menu">
 				            <!-- <li><a href="">Login</a></li> -->
-				            <li><?php echo $this->Html->link("Login", array('action' => 'login')); ?></li>
-				            <li><?php echo $this->Html->link("お気に入り", array('action' => 'favorites#')); ?></li>  
-				            <li><?php echo $this->Html->link("編集・削除", array('action' => 'edit')); ?></li>
+				            <li><?php echo $this->Html->link("Login", array('controller' => 'users', 'action' => 'login')); ?></li>
+				            <li><?php echo $this->Html->link("お気に入り", array('controller' => 'favorites','action' => 'favorites')); ?></li>  
+				            <li><?php echo $this->Html->link("編集・削除", array('controller' => 'posts','action' => 'edit')); ?></li>
+				            <li><?php echo $this->Html->link("Logout", array('controller' => 'users','action' => 'logout')); ?></li>
 				            <li class="divider"></li>
-				            <li><?php echo $this->Html->link("Logout", array('action' => 'logout')); ?></li>
+				            <li><?php echo $this->Html->link("会員登録", array('controller' => 'users','action' => 'register')); ?></li>
+				            <li><?php echo $this->Html->link("内容変更", array('controller' => 'users','action' => 'edit')); ?></li>
+				            <li><?php echo $this->Html->link("退会", array('controller' => 'users','action' => 'delate')); ?></li>
 			          	</ul>
 			        </li>
 			    </ul>
@@ -122,26 +131,21 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<div class="body">
 
 		<div class="tab-content body" style="margin-top: 85px;">
-              <div class="tab-pane active" id="home">
-                <a href=""><img src="/papyrus/img/DSC05821.JPG" alt="Image" style="max-width: 780px; height: auto;"></a>
-              </div>
-              <div class="tab-pane" id="food">
-                <a href=""><img src="/papyrus/img/background.jpg" alt="Image" style="max-width: 780px; height: auto;"></a>
-              </div>
-              <div class="tab-pane" id="activity">
-                <a href=""><img src="/papyrus/img/DSC05821.JPG" alt="Image"></a>
-              </div>
-              <div class="tab-pane" id="local">
-                <a href=""><img src="/papyrus/img/background.jpg" alt="Image"></a>
-              </div>
-              <div class="tab-pane" id="life">
-                <a href=""><img src="/papyrus/img/DSC05821.JPG" alt="Image"></a>
-              </div>
+            
+            <!-- ここからメイン部分 -->
+            <div id="content">
+
+						<?php echo $this->Session->flash(); ?>
+
+						<?php echo $this->fetch('content'); ?>
+
+			</div>	
+			<!-- ここまでメイン部分 -->	
 
 
-                <ul>
+              <ul>
                     <li class="current">
-                        <a href="blog.html"><img src="/papyrus/img/DSC05821.JPG" alt="Image"></a>
+                        <a href="blog.html"><img src="" alt="Image"></a>
                         <div>
                             <h2><a href="blog.html">グルメ</a></h2>
                             <p>
@@ -150,7 +154,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         </div>
                     </li>
                     <li>
-                        <a href="blog.html"><img src="papyrus/DSC05821.JPG" alt="Image"></a>
+                        <a href="blog.html"><img src="" alt="Image"></a>
                         <div>
                             <h2><a href="blog.html">アクティビティ</a></h2>
                             <p>
@@ -159,7 +163,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         </div>
                     </li>
                     <li>
-                        <a href="blog.html"><img src="papyrus/DSC05821.JPG" alt="Image"></a>
+                        <a href="blog.html"><img src="" alt="Image"></a>
                         <div>
                             <h2><a href="blog.html">ローカル</a></h2>
                             <p>
@@ -167,16 +171,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             </p>
                         </div>
                     </li>
-                </ul>
+              </ul>
 
 
-			<div id="content">
-
-						<?php echo $this->Session->flash(); ?>
-
-						<?php echo $this->fetch('content'); ?>
-
-			</div>
+			
 
         </div>
 
@@ -297,7 +295,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 -->
 
 
-		<div style="margin-top: 68px;">
+		<div style="margin-top: 90px;">
 		<!--
 			<div >
 				<h3>Cooking Video</h3>

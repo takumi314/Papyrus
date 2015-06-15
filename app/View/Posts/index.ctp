@@ -1,10 +1,17 @@
+
+<div class="tab-pane active" id="home">
+                <a href=""><img src="/papyrus/img/DSC05821.JPG" alt="Image" style="max-width: 780px; height: auto;"></a>
+</div>
+            
+
+
+
 <div>
 
             <div class="tab-content body" style="margin-top: 85px;">
               <div class="tab-pane active" id="home">
                 <a href="index.html"><img src="images/background.jpg" alt="Image" style="max-width: 780px; height: auto;"></a>
               </div>
-              
 
                 <ul>
                     <li class="current ">

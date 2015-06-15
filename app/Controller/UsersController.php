@@ -6,7 +6,7 @@ class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('add', 'login');
+        $this->Auth->allow('register', 'login');
     }
 
 
@@ -23,14 +23,14 @@ class UsersController extends AppController {
         $this->set('user', $this->User->read(null, $id));
     }
 
-    public function add() {
+    public function register() {
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {                  
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('登録が完了しました。'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('登録に失敗しました。もう一度試して下さい。'));
             }
         }
     }
