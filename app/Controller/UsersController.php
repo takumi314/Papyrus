@@ -6,7 +6,7 @@ class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register', 'login');
+        $this->Auth->allow('register', 'login','categories','index','');
     }
 
 
@@ -26,14 +26,27 @@ class UsersController extends AppController {
     public function register() {
         if ($this->request->is('post')) {
             $this->User->create();
+
+            //$this->request->data['User']['year'];
+
+            //$this->request->data['User']['month'];
+            
+            // Viewのフォームタグから送られてきたPOSTデータ（連想配列）、['User']['year']と['User']['month']を１つのカラムデータ['User']['start_date']として合体する。
+            $this->request->data['User']['start_date'] = $this->request->data['User']['year'].'-'.$this->request->data['User']['month'].'-01';
+
             if ($this->User->save($this->request->data)) {                  
                 $this->Session->setFlash(__('登録が完了しました。'));
-                $this->redirect(array('action' => 'index'));
+                $this->redirect(array('action' => 'check'));
             } else {
                 $this->Session->setFlash(__('登録に失敗しました。もう一度試して下さい。'));
             }
         }
     }
+
+
+    public function check(){
+    }
+
 
     public function edit($id = null) {
         $this->User->id = $id;

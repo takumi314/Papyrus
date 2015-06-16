@@ -31,7 +31,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->css('cake.generic');
 
 		echo $this->Html->css('cooking');
-		//echo $this->Html->css('bootstrap_min');
+		echo $this->Html->css('bootstrap_min');
+		echo $this->Html->css('bootstrap');
 		
 		// jQuery CDN
         echo $this->Html->script('//code.jquery.com/jquery-1.10.2.min.js');
@@ -143,7 +144,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<!-- ここまでメイン部分 -->	
 
 
-              <ul>
+              <!-- <ul>
                     <li class="current">
                         <a href="blog.html"><img src="" alt="Image"></a>
                         <div>
@@ -171,7 +172,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             </p>
                         </div>
                     </li>
-              </ul>
+              </ul> -->
 
 
 			

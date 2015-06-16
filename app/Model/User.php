@@ -19,7 +19,7 @@ class User extends AppModel {
 
 
     public $validate = array(                               // 各項目に対してバリデーションルールを作成する。
-        'username' => array(                                // username項目にルールを設定する。
+        'name' => array(                                // username項目にルールを設定する。
             'required' => array(                            // 
                 'rule' => array('notEmpty'),                // 'rule' => array('notEmpty')
                 'message' => 'ユーザー名を入力して下さい。'       // もしも false が返される場合には「A username is required」というメッセージが返される。 
@@ -31,18 +31,23 @@ class User extends AppModel {
                 'message' => 'パスワードを入力して下さい。'
             )
         ),
-//        'role' => array(
-//            'valid' => array(
-//                'rule' => array('inList', array('admin', 'author')),
-//                'message' => 'Please enter a valid role',
-//               'allowEmpty' => false　                     // false にする場合、値は nonempty または !empty($value) || is_numeric($value) と同義。 
-//            )
-//          )
-        
-        'date' => array(                                    // date項目にルールを設定する。
+        'email' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => '初めてセブに来た時期を選択して下さい。'
+                'message' => 'メールアドレスを入力して下さい。' // false にする場合、値は nonempty または !empty($value) || is_numeric($value) と同義。                  
+            )
+        ),
+        
+        'start_date' => array(                                    // date項目にルールを設定する。
+            'required' => array(
+                'rule' => array('notEmpty'),
+                'message' => '初めてセブに来た時期を選択して下さい。'            
+            )
+        ),
+        'image' => array(                                    // date項目にルールを設定する。
+            'required' => array(
+                'message' => '',
+                'allowEmpty' => True
             )
         )
     );
