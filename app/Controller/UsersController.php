@@ -6,7 +6,7 @@ class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register', 'login','categories','index','');
+        $this->Auth->allow('register','login','categories','index','check','change_email','change_password','change_image','change_username');
     }
 
 
@@ -31,12 +31,16 @@ class UsersController extends AppController {
 
             //$this->request->data['User']['month'];
             
-            // Viewのフォームタグから送られてきたPOSTデータ（連想配列）、['User']['year']と['User']['month']を１つのカラムデータ['User']['start_date']として合体する。
-            $this->request->data['User']['start_date'] = $this->request->data['User']['year'].'-'.$this->request->data['User']['month'].'-01';
+            // Viewのフォームタグから送られてきたPOSTデータ（連想配列）、['User']['year']と['User']['month']を１つのカラムデータ['User']['start_']として合体する。
+            $this->request->data['User']['start_date'] = $this->request->data['User']['year']['year'].'-'.$this->request->data['User']['month']['month'].'-01';
+            //$this->request->data['User']['created'] = '2015-06-17 00:00:00';
+            //$this->request->data['User']['modified'] = '2015-06-17 00:00:00';
+
+            debug($this->request->data);
 
             if ($this->User->save($this->request->data)) {                  
                 $this->Session->setFlash(__('登録が完了しました。'));
-                $this->redirect(array('action' => 'check'));
+                //$this->redirect(array('action' => 'login'));
             } else {
                 $this->Session->setFlash(__('登録に失敗しました。もう一度試して下さい。'));
             }
@@ -44,7 +48,18 @@ class UsersController extends AppController {
     }
 
 
-    public function check(){
+    public function check($id = null){
+        $this->User->id = $id;
+        $this->set('user', $this->User->find('all'));
+    }
+
+    public function change_username() {
+    }
+
+    public function change_password() {
+    }
+
+    public function change_email() {
     }
 
 
