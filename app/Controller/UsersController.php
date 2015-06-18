@@ -6,13 +6,15 @@ class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register','login','categories','index','check','change_email','change_password','change_image','change_username');
+        $this->Auth->allow('register','login','logout','categories','index','check','change_email','change_password','change_image','change_username');
     }
 
 
     public function index() {
         $this->User->recursive = 0;                     // [ ->recursive ]
         $this->set('users', $this->paginate());
+
+
     }
 
     public function view($id = null) {
@@ -27,30 +29,27 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->User->create();
 
-            //$this->request->data['User']['year'];
-
-            //$this->request->data['User']['month'];
-            
             // Viewのフォームタグから送られてきたPOSTデータ（連想配列）、['User']['year']と['User']['month']を１つのカラムデータ['User']['start_']として合体する。
             $this->request->data['User']['start_date'] = $this->request->data['User']['year']['year'].'-'.$this->request->data['User']['month']['month'].'-01';
             //$this->request->data['User']['created'] = '2015-06-17 00:00:00';
             //$this->request->data['User']['modified'] = '2015-06-17 00:00:00';
 
-            debug($this->request->data);
+            //debug($this->request->data);
 
             if ($this->User->save($this->request->data)) {                  
                 $this->Session->setFlash(__('登録が完了しました。'));
-                //$this->redirect(array('action' => 'login'));
+                $this->redirect(array('action' => 'login'));
             } else {
                 $this->Session->setFlash(__('登録に失敗しました。もう一度試して下さい。'));
             }
         }
+
     }
 
 
-    public function check($id = null){
+    public function acount($id = null){
         $this->User->id = $id;
-        $this->set('user', $this->User->find('all'));
+        $this->set('user', $this->User->find($this->Session->read('id')));
     }
 
     public function change_username() {
@@ -97,21 +96,35 @@ class UsersController extends AppController {
     }
 
 
- 
-
     public function login() {
+
+        debug($this->request->is('post'));
+
+        debug($this->Auth->user('name'));
+
+
        if ($this->request->is('post')) {
-            if ($this->Auth->login()) {
-                $this->redirect($this->Auth->redirect());
-            } else {
-                $this->Session->setFlash(__('Invalid username or password, try again'));
-            }
+            
+        //    debug($this->Session->destroy());
+
+        debug($this->Auth->login());
+
+
+            // if ($this->Auth->login()) {
+
+            //    //$this->redirect($this->Auth->redirect());
+            //    // $this->Session->write('id');
+            // } else {
+            //     $this->Session->setFlash(__('メールアドレスとパスワードが一致しません。再度試して下さい。'));
+            // }
         }
     }
 
+
     public function logout() {
         $this->Auth->logout();
-        $this->redirect('/users/index');
+        //$this->Session->destroy();
+        $this->redirect('login');
     }
 
 

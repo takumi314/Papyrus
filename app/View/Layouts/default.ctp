@@ -41,6 +41,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->css('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css');
         echo $this->Html->css('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-glyphicons.css');
         echo $this->Html->script('//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js');
+		
+		// check.ctpのcssのため
+		//echo $this->Html->css('//stm-study.netdna-ssl.com/b691defb5531/_assets/stm/66c27085c68c971c9dedeb98abcb5d0a.css',array('media'=>'screen', 'rel'=>'stylesheet', 'type'=>'text/css'));;
+		//echo $this->Html->css('//stm-study.netdna-ssl.com/b691defb5531/_assets/stm/d1e8186026884a178731c0f44afd94a7.css',array('media'=>'all', 'rel'=>'stylesheet', 'type'=>'text/css'));
 
 
 		echo $this->fetch('meta');
@@ -102,7 +106,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 			    <ul class="nav navbar-nav navbar-right" >
-			        <li style="margin-top: 6px;"><h5 style="height: 30px; width: 200px; ">ようこそ <?php echo 'ゲスト';//$user[User][name]; ?> さん</h5></li>
+			        <li style="margin-top: 6px;"><h5 style="height: 30px; width: 200px; ">ようこそ <?php echo $username;//$user[User][name]; ?> さん</h5></li>
 			        <li><?php echo $this->Html->link("投稿する", array('controller' => 'posts', 'action' => 'add')); ?><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></li>
 			        <li class="dropdown">
 			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="searchbtn">
@@ -115,8 +119,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				            <li><?php echo $this->Html->link("編集・削除", array('controller' => 'posts','action' => 'edit')); ?></li>
 				            <li><?php echo $this->Html->link("Logout", array('controller' => 'users','action' => 'logout')); ?></li>
 				            <li class="divider"></li>
-				            <li><?php echo $this->Html->link("会員登録", array('controller' => 'users','action' => 'register')); ?></li>
-				            <li><?php echo $this->Html->link("内容変更", array('controller' => 'users','action' => 'edit')); ?></li>
+				            <li><?php echo $this->Html->link("新規登録", array('controller' => 'users','action' => 'register')); ?></li>
+				            <li><?php echo $this->Html->link("アカウント設定", array('controller' => 'users','action' => 'edit')); ?></li>
 				            <li><?php echo $this->Html->link("退会", array('controller' => 'users','action' => 'delate')); ?></li>
 			          	</ul>
 			        </li>
@@ -361,16 +365,16 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		</div>
 		<div id="content">
 
-			<?php echo $this->Session->flash(); ?>
+			<?php //echo $this->Session->flash(); ?>
 
-			<?php echo $this->fetch('content'); ?>
+			<?php //echo $this->fetch('content'); ?>
 		</div>
 		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
+			<?php //echo $this->Html->link(
+					//$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
+					//'http://www.cakephp.org/',
+					//array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
+				//);
 			?>
 			<p>
 				<?php echo $cakeVersion; ?>

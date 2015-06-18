@@ -53,24 +53,28 @@ class AppController extends Controller {
             ),
             'loginRedirect' => array('controller' => 'posts', 'action' => 'index'),
             'logoutRedirect' => array('controller' => 'pages', 'action' => 'display', 'home'),
-            'authenticate' => array('Form' => array('passwordHasher' => 'Blowfish')),
+            'authenticate' => array('Form' => array('passwordHasher' => 'Blowfish','fields'=>array('username'=>'email','password'=>'password') )),
             'authorize' => array('Controller') // この行を追加しました
         )
     );
 
     public function beforeFilter() {
-        $this->Auth->allow('index', 'view');
+        $this->Auth->allow('index', 'login','logout','categories','index','check','change_email','change_password','change_image','change_username');
+    
+
+        $this->set('username',$this->Auth->user('name'));
+
     }
 
 
 
     public function isAuthorized($user) {
-        if (isset($user['role']) && $user['role'] === 'admin') {
-            return true;
-        }
+        // if (isset($user['role']) && $user['role'] === 'admin') {
+        //     return true;
+        // }
 
-        // デフォルトは拒否
-        return false;
+        // // デフォルトは拒否
+        // return false;
 
     }
 
