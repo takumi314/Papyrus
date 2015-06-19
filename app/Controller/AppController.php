@@ -64,7 +64,7 @@ class AppController extends Controller {
     );
 
     public function beforeFilter() {
-        $this->Auth->allow('index', 'login','logout','categories','acount','index','check','user_email','user_password','user_image','user_name');
+        $this->Auth->allow('index', 'login','logout','categories','index','user_email','user_password','user_start_date','user_image','user_name');
     
         
         if (is_null($this->Auth->user('name'))) {                    // $this->Auth->user('name')がnullかどうかを判別する
@@ -83,6 +83,8 @@ class AppController extends Controller {
         
         $this->set('userStartDate',$this->Auth->user('start_date')); 
                       
+        $this->set('userPassword',$this->Auth->user('password')); 
+
 
     }
 
