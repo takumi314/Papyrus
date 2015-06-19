@@ -9,7 +9,7 @@
 
 	<div class="well">
 	<?php 
-		echo $this->Form->create('User', array('role'=>'form','type'=>'file', 'entype'=>'multipart/formdata', 'action'=>'login'));
+		echo $this->Form->create('User', array('role'=>'form','type'=>'file', 'entype'=>'multipart/formdata', 'action'=>'register'));
 		//echo $this->Form->input('group-id', array('div'=>array('class'=>'form-group'),'class'=>'form-control','option'=>$groups));
 
 		echo $this->Form->file('imageimage', array('type'=>'file','label'=>'プロフィール写真','multiple','div'=>array('class'=>'form-group'),'class'=>''));
@@ -35,7 +35,7 @@
 		echo $this->Form->button('<span class=""></span>Save User' ,
 								array('type'=>'submit',
 										'class'=>'btn btn-default btn-lg active form-group glyphicon glyphicon-ok' ,
-										'label'=>false,'escape'=>false)
+										'label'=>false,'escape'=>false)													// escapeとは、第１引数のhtmlをそのまま出力するためのもの。
 								);
 		echo '</div>'; 
 		//echo $this->Form->button( '<span class="glyphicon glyphicon-ok"></span> Save User' ,array('type'=>'submit','class'=>'btn btn-primary','label'=>false,'escape'=>false));

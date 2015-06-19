@@ -6,7 +6,7 @@ class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register','login','logout','categories','index','check','change_email','change_password','change_image','change_username');
+        $this->Auth->allow('register','login','categories','index','acount','user_email','user_start_date','user_password','user_image','user_name');
     }
 
 
@@ -26,6 +26,8 @@ class UsersController extends AppController {
     }
 
     public function register() {
+
+        debug($this->request->is('post'));
         if ($this->request->is('post')) {
             $this->User->create();
 
@@ -34,7 +36,7 @@ class UsersController extends AppController {
             //$this->request->data['User']['created'] = '2015-06-17 00:00:00';
             //$this->request->data['User']['modified'] = '2015-06-17 00:00:00';
 
-            //debug($this->request->data);
+            debug($this->request->data);
 
             if ($this->User->save($this->request->data)) {                  
                 $this->Session->setFlash(__('登録が完了しました。'));
@@ -48,18 +50,59 @@ class UsersController extends AppController {
 
 
     public function acount($id = null){
-        $this->User->id = $id;
-        $this->set('user', $this->User->find($this->Session->read('id')));
+        // $this->User->id = $id;
+        // $this->set('user', $this->User->find($this->Session->read('id')));
     }
 
-    public function change_username() {
+    public function user_name() {
+
     }
 
-    public function change_password() {
+    public function user_password() {
+
+        debug($this->request->is('post'));
+        debug($this->request->query['new_password_1']);
+        debug($this->request->query['new_password_2']);
+
     }
 
-    public function change_email() {
+    public function user_email($email=null) {
+        $this->User->email = $email;         
+        if (!$this->User->exists()) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+
+        //debug($this->request->is('get'));
+        //debug($this->request->data['User']['new_email_1']);
+        //debug($this->request->data['User']['new_email_2']);
+
+        if ($this->request->data['User']['new_email_1'] == $this->request->data['User']['new_email_2']) {
+            $this->request->data['User']['email'] = $this->request->data['User']['new_email_1'];
+
+            if ($this->request->is('post') || $this->request->is('put')) {
+                if ($this->User->save($this->request->data)) {
+                    $this->Session->setFlash(__('The user has been saved'));
+                    $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash(__('保存に失敗しました。再度入力しなおして下さい'));
+                }
+            } else {
+                //$this->request->data = $this->User->read(null, $id);
+                //unset($this->request->data['User']['password']);
+            }
+
+        } else {
+           $this->Session->setFlash(__('2つのメールアドレスが一致しません。もう一度入力しなおして下さい'));         // アラートを表示する
+        }
+
     }
+
+
+    public function user_image() {
+    }
+
+    public function user_start_date() {
+    }    
 
 
     public function edit($id = null) {
@@ -98,25 +141,15 @@ class UsersController extends AppController {
 
     public function login() {
 
-        debug($this->request->is('post'));
-
-        debug($this->Auth->user('name'));
-
-
        if ($this->request->is('post')) {
-            
-        //    debug($this->Session->destroy());
 
         debug($this->Auth->login());
 
-
-            // if ($this->Auth->login()) {
-
-            //    //$this->redirect($this->Auth->redirect());
-            //    // $this->Session->write('id');
-            // } else {
-            //     $this->Session->setFlash(__('メールアドレスとパスワードが一致しません。再度試して下さい。'));
-            // }
+            if ($this->Auth->login()) {
+                $this->redirect($this->Auth->redirect(array('controller' => 'Posts', 'action' => 'index')));
+            } else {
+                $this->Session->setFlash(__('メールアドレスとパスワードが一致しません。再度試して下さい。'));
+            }
         }
     }
 
@@ -124,7 +157,7 @@ class UsersController extends AppController {
     public function logout() {
         $this->Auth->logout();
         //$this->Session->destroy();
-        $this->redirect('login');
+        $this->redirect(array('controller' => 'Posts', 'action' => 'index'));
     }
 
 

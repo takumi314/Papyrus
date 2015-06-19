@@ -3,6 +3,7 @@
 <?php echo $this->Session->flash('auth'); ?>
 
 <?php echo $this->Form->create('User'); ?>		<!--  開始タグ<form>を出力する。create()には、対応するモデル(User.php)を設定する。  --> 
+
     <fieldset>
         <legend class="text-center">
         	<?php echo __('ログインフォーム'); ?>
@@ -21,6 +22,15 @@
            ?>
 
             <?php echo $this->Form->end(); ?>
+    
+
+
+
+
+
+
+
+
     
         <div>
             <h5><span>はじめての方は、最初にユーザー登録を行って下さい。</span></h5>

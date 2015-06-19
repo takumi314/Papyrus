@@ -53,16 +53,36 @@ class AppController extends Controller {
             ),
             'loginRedirect' => array('controller' => 'posts', 'action' => 'index'),
             'logoutRedirect' => array('controller' => 'pages', 'action' => 'display', 'home'),
-            'authenticate' => array('Form' => array('passwordHasher' => 'Blowfish','fields'=>array('username'=>'email','password'=>'password') )),
+            'authenticate' => array('Form' => array('passwordHasher' => 'Blowfish',
+                                                    'fields'=>array('username'=>'email',            // ログインのユーザーネームをEメールに変更
+                                                                    'password'=>'password'          // ログインのパスワードはデフォルト
+                                                                    ) 
+                                                    )
+                                    ),
             'authorize' => array('Controller') // この行を追加しました
         )
     );
 
     public function beforeFilter() {
-        $this->Auth->allow('index', 'login','logout','categories','index','check','change_email','change_password','change_image','change_username');
+        $this->Auth->allow('index', 'login','logout','categories','acount','index','check','user_email','user_password','user_image','user_name');
     
+        
+        if (is_null($this->Auth->user('name'))) {                    // $this->Auth->user('name')がnullかどうかを判別する
+            $this->set('userName','ゲスト');                          // ログアウト中ならば、「ゲスト」をビューに受け渡す
+        }else {         
+            $this->set('userName', $this->Auth->user('name'));       // ログイン中ならば、「$userName」をすべてのビューに受け渡す    
+        }
 
-        $this->set('username',$this->Auth->user('name'));
+        $this->set('userEmail',$this->Auth->user('email'));      // ユーザー情報emailをすべtのビューに受け渡す
+  
+        if ($this->Auth->user('image') == '-1') {
+            $this->set('userImage','アップロードされていません');
+        } else {
+            $this->set('userImage',$this->Auth->user('image'));      // ユーザー情報imageをすべてのビューに受け渡す
+        }
+        
+        $this->set('userStartDate',$this->Auth->user('start_date')); 
+                      
 
     }
 

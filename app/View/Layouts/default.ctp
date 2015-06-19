@@ -106,11 +106,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 			    <ul class="nav navbar-nav navbar-right" >
-			        <li style="margin-top: 6px;"><h5 style="height: 30px; width: 200px; ">ようこそ <?php echo $username;//$user[User][name]; ?> さん</h5></li>
+			        <li style="margin-top: 6px;"><h5 style="height: 30px; width: 200px; ">ようこそ <?php echo $userName; ?> さん</h5></li>
 			        <li><?php echo $this->Html->link("投稿する", array('controller' => 'posts', 'action' => 'add')); ?><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></li>
 			        <li class="dropdown">
 			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="searchbtn">
-			        		<img src="" style=""><?php echo 'ユーザー名';?><span class="caret" ></span>
+			        		<img src="" style=""><?php echo 'ユーザー';?><span class="caret" ></span>
 			        	</a>
 			        	<ul class="dropdown-menu" role="menu">
 				            <!-- <li><a href="">Login</a></li> -->
@@ -120,7 +120,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				            <li><?php echo $this->Html->link("Logout", array('controller' => 'users','action' => 'logout')); ?></li>
 				            <li class="divider"></li>
 				            <li><?php echo $this->Html->link("新規登録", array('controller' => 'users','action' => 'register')); ?></li>
-				            <li><?php echo $this->Html->link("アカウント設定", array('controller' => 'users','action' => 'edit')); ?></li>
+				            <li><?php echo $this->Html->link("アカウント設定", array('controller' => 'users','action' => 'acount')); ?></li>
 				            <li><?php echo $this->Html->link("退会", array('controller' => 'users','action' => 'delate')); ?></li>
 			          	</ul>
 			        </li>
