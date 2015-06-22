@@ -6,7 +6,7 @@ class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register','login','categories','index','user_email','acount','user_start_date','user_password','user_image','user_name');
+        $this->Auth->allow('register','login','categories','index','acount','user_image');
     }
 
 
@@ -51,37 +51,100 @@ class UsersController extends AppController {
         // $this->set('user', $this->User->find($this->Session->read('id')));
     }
 
+
     public function user_name() {
 
+
+            if ($this->request->is('post') || $this->request->is('put')) {
+                    
+                debug($userName);
+
+                if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
+                                                     'name' => $this->request->data['User']['new_name'] ) ),
+                                            false,
+                                            array('name')
+                                        )
+                ) {
+                     $this->Session->setFlash(__('名前の再設定が完了しました'));
+                     $this->redirect(array('Controller' => 'Users','action' => 'acount'));
+                } else {
+                     $this->Session->setFlash(__('保存に失敗しました。再度入力しなおして下さい'));
+                }
+            } else {
+            //     //$this->request->data = $this->User->read(null, $id);
+            //     //unset($this->request->data['User']['password']);
+            }
+     
     }
 
-    public function user_password() {
+    public function user_password() {            
+                
+                if ($this->request->is('post') || $this->request->is('put')) {
 
-        // debug($this->request->is('post'));
-        // debug($this->request->query['new_password_1']);
-        // debug($this->request->query['new_password_2']);
+                    if (isset($this->request->data['User']['new_password_1']) && !empty($this->request->data['User']['new_password_1'])) {
+                       
+                        if ($this->request->data['User']['new_password_1'] == $this->request->data['User']['new_password_2']){
 
+                            $new_password = $this->request->data['User']['new_password_1'] ;
+
+                            //debug( $this->User->findById('password') );
+                            //debug($userPassword);
+                            //debug($this->request->data['User']['old_password']);
+
+                            // 実行前に現在のパスワードを要求する 
+                            //if ( $userPassword == $passwordHasher->hash($this->request->data['User']['old_password']) ) {
+
+                                if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
+                                                                     'password' => $new_password ) ),
+                                                            false,
+                                                            array('password')
+                                                        )
+                                ) {
+                                     $this->Session->setFlash(__('パスワードの再設定が完了しました'));
+                                     $this->redirect(array('Controller' => 'Users','action' => 'acount'));
+                                } else {
+                                     $this->Session->setFlash(__('保存に失敗しました。再度入力しなおして下さい'));
+                                }
+
+                            //} else {
+                                $this->Session->setFlash(__('現在のパスワードが正しくありません。もう一度入力してください'));
+                            //}
+                        } else {
+                           $this->Session->setFlash(__('2つのメールアドレスが一致しません'));         // アラートを表示する
+                        }
+                    } else {
+                        $this->Session->setFlash(__('パスワードを入力してください'));                        
+                    }
+                        
+
+                } else {
+                //     //$this->request->data = $this->User->read(null, $id);
+                //     //unset($this->request->data['User']['password']);
+                }
+
+                       
     }
+
 
     public function user_email($id = null) {
-        debug($this->Auth->user());         
+        //debug($this->Auth->user());         
         // if (!$this->User->exists()) {
         //     throw new NotFoundException(__('Invalid user'));
         // }
+         if ($this->request->is('post') || $this->request->is('put')) {   
 
-        if ($this->request->data['User']['new_email_1'] == $this->request->data['User']['new_email_2']){
+            if ($this->request->data['User']['new_email_1'] == $this->request->data['User']['new_email_2']){
 
                 $new_email = $this->request->data['User']['new_email_1'] ;
 
-            debug( $this->User->findById('email') );
+            //debug( $this->User->findById('email') );
 
             // if (!($this->User->findById($email))) {
             //     throw new NotFoundException(__('サーバー上にあなたの情報が存在しません'));
             // }
-
             //debug($this->request->data)
 
-            if ($this->request->is('post') || $this->request->is('put')) {
+            
                 if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
                                                      'email' => $new_email ) ),
                                             false,
@@ -94,20 +157,77 @@ class UsersController extends AppController {
                      $this->Session->setFlash(__('保存に失敗しました。再度入力しなおして下さい'));
                 }
             } else {
-            //     //$this->request->data = $this->User->read(null, $id);
-            //     //unset($this->request->data['User']['password']);
+           $this->Session->setFlash(__('2つのメールアドレスが一致しません'));         // アラートを表示する
             }
 
         } else {
-           $this->Session->setFlash(__('2つのメールアドレスが一致しません'));         // アラートを表示する
+        //     //$this->request->data = $this->User->read(null, $id);
+        //     //unset($this->request->data['User']['password']);
         }
+        
 
     }
 
     public function user_image() {
+
+        debug($this->Auth->user('id'));
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+                if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
+                                                     'image' => $changed_image ) ),
+                                            false,
+                                            array('image')
+                                        )
+                ) {
+                     $this->Session->setFlash(__('プロフィール写真が変更されました'));
+                     $this->redirect(array('Controller' => 'Users','action' => 'acount'));
+                } else {
+                     $this->Session->setFlash(__('変更に失敗しました。再度試してみてください'));
+                }
+            } else {
+            //     //$this->request->data = $this->User->read(null, $id);
+            //     //unset($this->request->data['User']['password']);
+            }
+
     }
 
     public function user_start_date() {
+
+            if ($this->request->is('post') || $this->request->is('put')) {
+
+                 if (!($this->request->data['User']['year']['year'])) {
+                    $this->Session->setFlash(__('年が選択されていません'));
+                } else if(!($this->request->data['User']['month']['month'])) {
+                    $this->Session->setFlash(__('月が選択されていません'));
+                } else if(!($this->request->data['User']['day']['day'])) {
+                    $this->Session->setFlash(__('日が選択されていません'));
+                } else{
+
+                    
+                    $new_start_date = $this->request->data['User']['year']['year'].
+                                        '-'.$this->request->data['User']['month']['month'].         
+                                        '-'.$this->request->data['User']['day']['day'];
+
+                    if ($this->request->is('post') || $this->request->is('put')) {
+                        if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
+                                                             'start_date' => $new_start_date ) ),
+                                                    false,
+                                                    array('start_date')
+                                                )
+                        ) {
+                             $this->Session->setFlash(__('再設定が完了しました'));
+                             $this->redirect(array('Controller' => 'Users','action' => 'acount'));
+                        } else {
+                             $this->Session->setFlash(__('保存に失敗しました。再度入力しなおして下さい'));
+                        }
+                    } else {    break;
+                    //     //$this->request->data = $this->User->read(null, $id);
+                    //     //unset($this->request->data['User']['password']);
+                    }                    
+                }
+
+            } else {    }
+
     }    
 
 
@@ -129,7 +249,7 @@ class UsersController extends AppController {
         }
     }
 
-
+    // アカウントの削除処理
     public function delete($id = null) {
         $this->request->onlyAllow('post');
 
@@ -145,7 +265,7 @@ class UsersController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
-
+    // ログイン処理
     public function login() {
 
        if ($this->request->is('post')) {
@@ -158,10 +278,10 @@ class UsersController extends AppController {
         }
     }
 
-
+    // ログアウト処理
     public function logout() {
         $this->Auth->logout();
-        //$this->Session->destroy();
+        
         $this->redirect(array('controller' => 'Posts', 'action' => 'index'));
     }
 

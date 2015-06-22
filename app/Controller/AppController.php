@@ -76,7 +76,7 @@ class AppController extends Controller {
         $this->set('userEmail',$this->Auth->user('email'));      // ユーザー情報emailをすべtのビューに受け渡す
   
         if ($this->Auth->user('image') == '-1') {
-            $this->set('userImage','アップロードされていません');
+            $this->set('userImage','プロフィール写真');
         } else {
             $this->set('userImage',$this->Auth->user('image'));      // ユーザー情報imageをすべてのビューに受け渡す
         }
@@ -85,6 +85,7 @@ class AppController extends Controller {
                       
         $this->set('userPassword',$this->Auth->user('password')); 
 
+        
 
     }
 

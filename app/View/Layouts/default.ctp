@@ -81,7 +81,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		        <li><?php echo $this->Html->link("グルメ", array('controller' => 'categories', 'action' => 'category', 1 )); ?></li>
 		        <li><?php echo $this->Html->link("アクティビティ", array('controller' => 'categories', 'action' => 'category', 2 )); ?></li>
 		        <li><?php echo $this->Html->link("ローカル", array('controller' => 'categories', 'action' => 'category', 3 )); ?></li>
-		        <li><?php echo $this->Html->link("生活・留学留学", array('controller' => 'categories', 'action' => 'category', 4 )); ?></li>
+		        <li><?php echo $this->Html->link("生活・留学", array('controller' => 'categories', 'action' => 'category', 4 )); ?></li>
 		        				
 		       	<!-- <li><a href="category#4">生活・留学</a></li> -->		    
 		      	<?php //foreach ($Categories as $category): ?>
@@ -312,7 +312,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<!-- 後で見る -->
 				<h3>後で見る</h3>
 				
-				<?php echo $this->Element('afterlook'); ?>				
+				<?php echo $this->Element('afterlook', array()); ?>				
 
 			</div>
 
@@ -320,15 +320,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<!-- <h3>最新の記事</h3> -->
 				<h3>最新の記事</h3>
 
-				<?php echo $this->Element('latest5post'); ?>
+				<?php echo $this->Element('latest5post', array()); ?>
 		
 			</div>
 			<div>
 				<!-- 注目の記事 -->
 				<h3>注目の記事</h3>
-				
-				<?php echo $this->Element('popular5post'); ?>
-
+				<?php echo $this->Element('popular5post', array()); ?>
 			</div>
 
 			<div >
@@ -345,22 +343,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<div class="footer">
 		<div>
 			<p>
-				&copy; Copyright 2012. All rights reserved
+				&copy; Copyright 2014. All rights reserved by Kohei
 			</p>
 		</div>
 	</div>
 
 
-
-
-
-
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-
-
-
 
 		</div>
 		<div id="content">
