@@ -33,6 +33,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->css('cooking');
 		echo $this->Html->css('bootstrap_min');
 		echo $this->Html->css('bootstrap');
+		echo $this->Html->css('blog-post');
+		//echo $this->Html->css('');
+		//echo $this->Html->css('');
 		
 		// jQuery CDN
         echo $this->Html->script('//code.jquery.com/jquery-1.10.2.min.js');
@@ -312,7 +315,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<!-- 後で見る -->
 				<h3>後で見る</h3>
 				
-				<?php echo $this->Element('afterlook', array()); ?>				
+				<?php echo $this->Element('afterlook'); ?>				
 
 			</div>
 
@@ -320,13 +323,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<!-- <h3>最新の記事</h3> -->
 				<h3>最新の記事</h3>
 
-				<?php echo $this->Element('latest5post', array()); ?>
+				<?php echo $this->Element('latest5post'); ?>
 		
 			</div>
 			<div>
 				<!-- 注目の記事 -->
 				<h3>注目の記事</h3>
-				<?php echo $this->Element('popular5post', array()); ?>
+				<?php echo $this->Element('popular5post'); ?>
 			</div>
 
 			<div >

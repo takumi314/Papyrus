@@ -1,12 +1,12 @@
 <?php
 class Post extends AppModel {
 
-	public $belongsTo = 'Category';		// Categoryモデルからカテゴリーのデータを参照する。（アソシエーション）
-
+	public $belongsTo = array('Category','User');		// Categoryモデルからカテゴリーのデータを参照する。（アソシエーション）
+																// Userモデルからユーザーのデータを参照する。（アソシエーション）
+																// Pictureモデルから画像のファイル名を参照する
 	public function isOwnedBy($post, $user) {
         return $this->field('id', array('id' => $post, 'user_id' => $user)) !== false;
     }
-
 
     //検索のために追加
     public $actsAs = array('Search.Searchable');

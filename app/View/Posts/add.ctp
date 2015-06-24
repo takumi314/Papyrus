@@ -1,4 +1,4 @@
-<?php //print_r($categories_list); ?>
+
 
 <!-- File: /app/View/Posts/add.ctp -->
 
@@ -7,7 +7,7 @@
 
 	echo '<fieldset form-group>';	
 	//echo $this->Html->image(); 					// userのプロフィール写真を表示
-	echo '<h4>'.$userName.'</h4>' ;						// ユーザー名を表示
+	//echo '<h4>'.$userName.'</h4>' ;						// ユーザー名を表示
 	//echo $howlong ;							// デブ歴を表示する（保留）
 	echo '</fieldset form-group>';
 
@@ -34,7 +34,7 @@
 
 	echo '<div class="text-center">';
 	echo $this->Form->textarea('body', array('label'=>'本文','placeholder'=>'本文はこちらにお書き下さい','maxlength'=>' 50000','rows' => '30','cols'=>'85', 'wrap'=>'hard'));
-	echo '</div>';
+	//echo '</div>';
 	
 	//echo '<div class="text-center">';
 	echo $this->Form->button('<span class=""></span>下書き保存' ,array('name'=>'data[submitBtn]','value' => 'save','type'=>'submit',
@@ -62,6 +62,6 @@
 ?>
 
 
-<div class="embed-responsive embed-responsive-16by9">
+<!-- <div class="embed-responsive embed-responsive-16by9">
   <iframe class="embed-responsive-item" src="..."></iframe>
-</div>
+</div> -->

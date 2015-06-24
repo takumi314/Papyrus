@@ -3,24 +3,93 @@ class PostsController extends AppController {
     
     public $helpers = array('Html', 'Form', 'Session','Time');
     public $components = array('Session','Search.Prg');     //Prgコンポーネントを読み込む。
-    public $uses = array('Post','Category','Afterlook');        // POSTモデルとCategoryモデルを指定する。
+    public $uses = array('Post','Category','Afterlook','User','Picture');        // POSTモデルとCategoryモデルを指定する。
     public $presetVars = true;                      // Prgコンポーネントのメソッドで利用される変数の事前設定
+
+
+    public function beforeFilter() {
+        parent::beforeFilter();                         // 
+    // ユーザー自身による登録とログインを許可する
+        $this->Auth->allow('register','login','categories','index','acount','user_image','view');
+
+
+        // ここからサイドビューを表示する
+        $user = $this->Post->query("SELECT * FROM 
+                                            (SELECT * FROM `posts` 
+                                                GROUP BY `posts`.`created` 
+                                                DESC LIMIT 0,5) 
+                                        AS `latest` 
+                                        RIGHT JOIN `users` 
+                                        ON `latest`.`user_id`=`users`.`id` 
+                                        limit 0,5;");
+
+        $this->set('latest5post', $user ) ;        
+             
+        $populars = $this->Post->query( "SELECT * FROM 
+                                            (SELECT * FROM 
+                                                ( SELECT COUNT(*) 
+                                                    AS 'cnt', `histories`.`post_id` 
+                                                    FROM `histories` 
+                                                    GROUP BY `histories`.`post_id` 
+                                                    ORDER BY 'cnt' 
+                                                    DESC LIMIT 0,5) 
+                                                AS `populars` 
+                                                RIGHT JOIN `posts` 
+                                                ON `populars`.`post_id` = `posts`.`id` 
+                                                limit 0,5) 
+                                            AS `writer` 
+                                            LEFT JOIN `users` 
+                                            ON `users`.`id`=`writer`.`user_id` 
+                                            LIMIT 0,5;" 
+                                        );        
+
+        $this->set('populars', $populars);
+
+
+    }
+
+
 
     public function index() {
 		// set(); 'posts'という名前でViewにとばす処理を行う。
         $this->set('posts', $this->Post->find('all'));
 
-        $this->set('latest5post', $this->Post->query( "SELECT * FROM `posts` GROUP BY `posts`.`created` DESC LIMIT 0,3 ;" ) ) ;        
+        // $user = $this->Post->query("SELECT * FROM 
+        //                                     (SELECT * FROM `posts` 
+        //                                         GROUP BY `posts`.`created` 
+        //                                         DESC LIMIT 0,5) 
+        //                                 AS `latest` 
+        //                                 RIGHT JOIN `users` 
+        //                                 ON `latest`.`user_id`=`users`.`id` 
+        //                                 limit 0,5;");
 
-        debug($this->Post->query( "SELECT * FROM `posts` GROUP BY `posts`.`created` DESC LIMIT 0,3 ;"  ) );
+        // $this->set('latest5post', $user ) ;        
+
+        // //debug($this->Post->query( "SELECT * FROM `posts` GROUP BY `posts`.`created` DESC LIMIT 0,3 ;"  ) );
+        // //$this->set('populars', $this->Post->query( "SELECT COUNT(*) AS 'cnt', `histories`.`post_id` FROM `histories` GROUP BY `histories`.`post_id` ORDER BY 'cnt' DESC LIMIT 0,5 ;" ) ) ;                
+        // $populars = $this->Post->query( "SELECT * FROM 
+        //                                     (SELECT * FROM 
+        //                                         ( SELECT COUNT(*) 
+        //                                             AS 'cnt', `histories`.`post_id` 
+        //                                             FROM `histories` 
+        //                                             GROUP BY `histories`.`post_id` 
+        //                                             ORDER BY 'cnt' 
+        //                                             DESC LIMIT 0,5) 
+        //                                         AS `populars` 
+        //                                         RIGHT JOIN `posts` 
+        //                                         ON `populars`.`post_id` = `posts`.`id` 
+        //                                         limit 0,5) 
+        //                                     AS `writer` 
+        //                                     LEFT JOIN `users` 
+        //                                     ON `users`.`id`=`writer`.`user_id` 
+        //                                     LIMIT 0,5;" 
+        //                                 );        
+        // //debug($populars);
+        // $this->set('populars', $populars);
 
     }
-
-    public function home(){
-
-    }
-
     
+
     public function view($id = null) {
         if (!$id) {
             throw new NotFoundException(__('Invalid post'));   // 実在するレコードにアクセスすることを保証するために少しだけエラーチェックを行います。
@@ -47,22 +116,21 @@ class PostsController extends AppController {
             //debug($this->request->data);
             //$this->set('categories_list',$this->Category->find['list']);
             if ($this->request->data['submitBtn'] == 'post') {
-                $this->request->data['Post']['status'] = '2';  
+                $this->request->data['Post']['status'] = 2;  
             } else {
-                $this->request->data['Post']['status'] = '1';  
+                $this->request->data['Post']['status'] = 1;  
             } 
 
-            debug($this->request->data);
-            var_dump($this->request->data);
-
+            //debug($this->request->data);
+            //var_dump($this->request->data);
 
             if ($this->Post->save($this->request->data)) {                  
                 // ユーザがフォームを使ってデータをPOSTした場合、その情報は、$this->request->data の中に入る。 
                 $this->Session->setFlash(__('投稿が完了しました'));
                 //  Session->setFlash() メソッドを使ってセッション変数にメッセージをセットすることによって、リダイレクト後のページでこれを表示します。
-                //$this->redirect(array('action' => 'add'));
+                //$this->redirect(array('action' => 'index'));
             } else {
-                //$this->Session->setFlash(__('投稿に失敗しました'));
+                $this->Session->setFlash(__('投稿に失敗しました'));
             }
         }
 
@@ -121,13 +189,44 @@ class PostsController extends AppController {
 
     public function category_index($category_id = null) {
         // set(); 'posts'という名前でViewにとばす処理を行う。
-        $posts = $this->Post->find('all', array('conditions' => array('category_id' => $category_id)));        
-        $categories = $this->Category->find('first', array('conditions' => array('id' => $category_id)));
-      //$categories = $this->Category->findById($category_id);    // どちらでもOK!!
+        $posts = $this->Post->find('all', array('conditions' => array('category_id' => $category_id, 
+                                                                        'picture_id' => $picture_id,
+                                                                        'category_id' => $user_id )
+                                               )
+                                    );        
 
-        $this->set(compact('posts','categories'));       // 上記の$postとcompact('posts')が関連付けされる。
+        $categories = $this->Category->find('first', array('conditions' => array('id' => $category_id)));
+        $pictures = $this->Picture->find('first', array('conditions' => array('id' => $picture_id)));
+        $users = $this->User->find('first', array('conditions' => array('id' => $user_id)));    
+
+    //$categories = $this->Category->findById($category_id);    // どちらでもOK!!
+
+        $this->set(compact('posts','categories','user','pictures'));       // 上記の$postとcompact('posts')が関連付けされる。
 
     }
+
+    public function picture_index($picgture_id = null) {
+        // set(); 'posts'という名前でViewにとばす処理を行う。
+        $posts = $this->Post->find('all', array('conditions' => array('picture_id' => $picture_id)));        
+        $pictures = $this->Picture->find('first', array('conditions' => array('id' => $picture_id)));
+      //$Pictures = $this->Picture->findById($picture_id);    // どちらでもOK!!
+
+        $this->set(compact('posts','pictures'));       // 上記の$postとcompact('posts')が関連付けされる。
+
+    }
+
+    public function user_index($user_id = null) {
+        // set(); 'posts'という名前でViewにとばす処理を行う。
+        $posts = $this->Post->find('all', array('conditions' => array('user_id' => $user_id)));        
+        $users = $this->User->find('first', array('conditions' => array('id' => $user_id)));
+      //$Pictures = $this->Picture->findById($picture_id);    // どちらでもOK!!
+
+        $this->set(compact('posts','users'));       // 上記の$postとcompact('posts')が関連付けされる。
+
+    }
+
+
+
 
     public function isAuthorized($user) {
        // 登録済ユーザーは投稿できる

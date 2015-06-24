@@ -3,10 +3,47 @@
 // app/Controller/UsersController.php
 class UsersController extends AppController {
 
+    public $uses = array('Post','Category','Afterlook','User','Picture'); 
+
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register','login','categories','index','acount','user_image');
+        $this->Auth->allow('register','login','categories','index','acount','user_image','view');
+
+
+        // ここからサイドビューを表示する
+        $user = $this->Post->query("SELECT * FROM 
+                                            (SELECT * FROM `posts` 
+                                                GROUP BY `posts`.`created` 
+                                                DESC LIMIT 0,5) 
+                                        AS `latest` 
+                                        RIGHT JOIN `users` 
+                                        ON `latest`.`user_id`=`users`.`id` 
+                                        limit 0,5;");
+
+        $this->set('latest5post', $user ) ;        
+             
+        $populars = $this->Post->query( "SELECT * FROM 
+                                            (SELECT * FROM 
+                                                ( SELECT COUNT(*) 
+                                                    AS 'cnt', `histories`.`post_id` 
+                                                    FROM `histories` 
+                                                    GROUP BY `histories`.`post_id` 
+                                                    ORDER BY 'cnt' 
+                                                    DESC LIMIT 0,5) 
+                                                AS `populars` 
+                                                RIGHT JOIN `posts` 
+                                                ON `populars`.`post_id` = `posts`.`id` 
+                                                limit 0,5) 
+                                            AS `writer` 
+                                            LEFT JOIN `users` 
+                                            ON `users`.`id`=`writer`.`user_id` 
+                                            LIMIT 0,5;" 
+                                        );        
+
+        $this->set('populars', $populars);
+
+
     }
 
 
@@ -54,10 +91,9 @@ class UsersController extends AppController {
 
     public function user_name() {
 
-
             if ($this->request->is('post') || $this->request->is('put')) {
                     
-                debug($userName);
+                //debug($userName);
 
                 if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
                                                      'name' => $this->request->data['User']['new_name'] ) ),
