@@ -8,6 +8,7 @@ class Post extends AppModel {
         return $this->field('id', array('id' => $post, 'user_id' => $user)) !== false;
     }
 
+
     //検索のために追加
     public $actsAs = array('Search.Searchable');
 	

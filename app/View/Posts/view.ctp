@@ -45,8 +45,9 @@
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
-                    <?php echo $this->Form->create('comment', array('role'=>'form','type'=>'post','Controller'=>'Comment','action'=>'add')); ?>
-                    	<?php echo $this->Form->hidden('post_id',array('value'=>$post['Post']['id']) ); ?>							<!-- 投稿記事IDをhiddenを使って、Commentsにpost_idの情報をPOST送信する -->
+                    <?php echo $this->Form->create('comment', array('role'=>'form','type'=>'post','Controller'=>'Comments','action'=>'add')); ?>
+                    	<?php echo $this->Form->hidden('post_id',array('value'=>$post['Post']['id']) ); ?>							
+                        <!-- 投稿記事IDをhiddenを使って、Commentsにpost_idの情報をPOST送信する -->
                         <!-- <div class="form-group"> -->
                             <!-- <textarea class="form-control" rows="3"></textarea> -->
                         <?php echo $this->Form->textarea('comment', array( 'placeholder' => '"'.$post['Post']['title'].'" に関する新しい情報はございませんか？','maxlength'=>' 5000','rows' => '5','cols'=>'85','wrap'=>'hard',array('div'=>'form-group'))); ?>
@@ -72,7 +73,7 @@
                 <div class="media">
                 	<?php foreach ($comments as $comment): ?>	<!-- ここから繰り返す -->
                     <a class="pull-left" href="#">
-                        <img class="media-object" src="http://placehold.it/64x64" alt="">
+                        <img class="media-object" src="<?php   ?>" alt="プロフィール画像">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading"><?php echo $comment['User']['name'] ; ?>
