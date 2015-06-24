@@ -36,7 +36,16 @@
                 <!-- Post Content -->
                 <p class="lead"><?php echo $post['Post']['body']; ?></p>
                 <p></p>
-                <p></p>
+
+                <div class="text-right">
+                    <?php
+                        echo $this->Form->create();
+                            echo $this->Form->button('<span class=""></span>お気に入り' ,array('name'=>'Favarite','value' => 'favorite','type'=>'submit',
+                            'class'=>'btn btn-primary active glyphicon glyphicon-thumbs-up',
+                            'label'=>false,'escape'=>false)); 
+                        echo $this->Form->end();
+                    ?>
+                </div>
 
                 <hr>
 
@@ -70,40 +79,49 @@
 
                 <!-- Comment -->
 
-                <div class="media">
-                	<?php foreach ($comments as $comment): ?>	<!-- ここから繰り返す -->
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="<?php   ?>" alt="プロフィール画像">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading"><?php echo $comment['User']['name'] ; ?>
-                            <small>
-                            	<?php echo 'Posted on '.date('F j, Y', strtotime($comment['Comment']['created'])).' at '.date('g:i A , D', strtotime($comment['Comment']['created'])); ?>
-                            </small>
-                        </h4>
-                        <?php 	//　ここからコメントの表示
-                        	$comment['Comment']['comment'];
-                        ?>
-                    </div>
-                <?php endforeach; ?>	<!-- 最初に戻る -->
-                </div>
+                <!-- ここから繰り返す -->
+                <?php foreach ($comments as $comment){
+                echo '<div class="media">';
+                
+                    echo '<a class="pull-left" href="#">';
+                        echo '<img class="media-object img-responsive" src="'.'リンク先'.'"  alt="プロフィール画像">';
+                    echo '</a>';
+                    echo '<div class="media-body">';
 
+                    if(is_null($comment['users']['name'])){ $comment['users']['name'] = 'Guest'; }
+
+                        echo '<h4 class="media-heading">'.$comment['users']['name'].'　' ;
+                        echo    '<small>';
+                            echo date('F j, Y', strtotime($comment['comment_user']['created'])).' '.date('g:i A , D', strtotime($comment['comment_user']['created'])); 
+                        echo '</small>';
+                        echo '</h4>';
+                        //　ここからコメントの表示
+                        echo $comment['comment_user']['comment'];
+                        
+                    echo '</div>';
+                
+                  
+
+                echo '</div>';
+                
+                }
+
+                ?>  
+                <!-- 最初に戻る -->
 
 
                 <!-- Comment -->
-                <div class="media">
-                    <a class="pull-left" href="#">
+              <!--   <div class="media">
+                    <a class="pull-left" href="">
                         <img class="media-object" src="http://placehold.it/64x64" alt="">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">Start Bootstrap
                             <small>August 25, 2014 at 9:30 PM</small>
-                        </h4>
-                        <?php 	//　ここからコメントの表示
-
-                        ?>
+                        </h4> -->
+                        <?php 	//　ここからコメントの表示?>
                         <!-- Nested Comment -->
-                        <div class="media">
+                        <!-- <div class="media">
                             <a class="pull-left" href="#">
                                 <img class="media-object" src="http://placehold.it/64x64" alt="">
                             </a>
@@ -113,10 +131,10 @@
                                 </h4>
                                 Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
                             </div>
-                        </div>
+                        </div> -->
                         <!-- End Nested Comment -->
-                    </div>
-                </div>
+                    <!-- </div> -->
+                <!-- </div> -->
 
     </div>
 </div>

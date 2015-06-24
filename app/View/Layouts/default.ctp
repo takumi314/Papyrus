@@ -100,7 +100,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 			  <!--  <p>navbar-form navbar-left search-logo</p> -->
 		      
-		      <form class="navbar-form navbar-left search-logo" role="search" action="index.html" style="width: 380px; padding-left: 40px;">
+		      <form class="navbar-form navbar-left search-logo" role="search" action="/papyrus/posts/result" style="width: 380px; padding-left: 40px;">
 		        <div class="form-group" style="width: 270px;">
 		        <input type="text" class="form-control" placeholder="Search"  id="search" style=" width: 250px;">
 		        </div>
