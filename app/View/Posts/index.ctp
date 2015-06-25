@@ -3,7 +3,6 @@
                 <a href=""><img src="/papyrus/img/DSC05821.JPG" alt="Image" style="max-width: 780px; height: auto;"></a>
 </div>
         
-
 <div>
             <div class="media">
                 <div class="media-left media-middle" style="height: 64px; width: 64px;">

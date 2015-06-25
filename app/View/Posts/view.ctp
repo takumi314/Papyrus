@@ -54,7 +54,7 @@
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
-                    <?php echo $this->Form->create('comment', array('role'=>'form','type'=>'post','Controller'=>'Comments','action'=>'add')); ?>
+                    <?php echo $this->Form->create('Comment', array('role'=>'form','type'=>'post','Controller'=>'Comments','action'=>'add')); ?>
                     	<?php echo $this->Form->hidden('post_id',array('value'=>$post['Post']['id']) ); ?>							
                         <!-- 投稿記事IDをhiddenを使って、Commentsにpost_idの情報をPOST送信する -->
                         <!-- <div class="form-group"> -->
@@ -62,7 +62,7 @@
                         <?php echo $this->Form->textarea('comment', array( 'placeholder' => '"'.$post['Post']['title'].'" に関する新しい情報はございませんか？','maxlength'=>' 5000','rows' => '5','cols'=>'85','wrap'=>'hard',array('div'=>'form-group'))); ?>
                         <!-- </div> -->
                         <!-- <button type="submit" class="btn btn-primary">コメントする</button> -->
-                        <?php echo $this->Form->button('<span class=""></span>コメントする' ,array('name'=>'Comment','value' => 'comment','type'=>'submit',
+                        <?php echo $this->Form->button('<span class=""></span>コメントする' ,array('name'=>'Comment_button','value' => 'save','type'=>'submit',
 							'class'=>'btn btn-primary active',
 							'label'=>false,'escape'=>false)); 
 						?>

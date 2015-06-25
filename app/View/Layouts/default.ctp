@@ -81,11 +81,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		      		<?php echo $this->Html->link("Home", array('controller' => 'posts', 'action' => 'index')); ?>
 		      		<span class="sr-only">(current)</span>
 		      	</li>
-		        <li><?php echo $this->Html->link("グルメ", array('controller' => 'categories', 'action' => 'category', 1 )); ?></li>
-		        <li><?php echo $this->Html->link("アクティビティ", array('controller' => 'categories', 'action' => 'category', 2 )); ?></li>
-		        <li><?php echo $this->Html->link("ローカル", array('controller' => 'categories', 'action' => 'category', 3 )); ?></li>
-		        <li><?php echo $this->Html->link("生活・留学", array('controller' => 'categories', 'action' => 'category', 4 )); ?></li>
-		        				
+		        <li><?php echo $this->Html->link("グルメ", array('controller' => 'categories', 'action' => 'view', 1 )); ?></li>
+		        <li><?php echo $this->Html->link("アクティビティ", array('controller' => 'categories', 'action' => 'view', 2 )); ?></li>
+		        <li><?php echo $this->Html->link("ローカル", array('controller' => 'categories', 'action' => 'view', 3 )); ?></li>
+		        <li><?php echo $this->Html->link("生活・留学", array('controller' => 'categories', 'action' => 'view', 4 )); ?></li>
+		        			
 		       	<!-- <li><a href="category#4">生活・留学</a></li> -->		    
 		      	<?php //foreach ($Categories as $category): ?>
 					<!-- <li> -->
