@@ -1,11 +1,5 @@
-<!-- File: /app/View/Categories/view.ctp -->
 
-<!-- <h1><?php echo h($category['Category']['name']); ?></h1>
-
-<p><small>Created: <?php echo $category['Category']['created']; ?></small></p>
-
-<p><?php echo h($category['Category']['id']); ?></p>
- -->
+ <!-- categories/view.ctp -->
 
 <div class="col-md-8">
 
@@ -28,14 +22,30 @@
                 <p><span class="glyphicon glyphicon-time"></span> <?php	echo 'Posted on '.date('F j, Y', strtotime($post['posts']['created'])).' at '.date('g:i A , D', strtotime($post['posts']['created'])); ?></p>
                 <hr>
                 <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                <!-- <img class="img-responsive" src="<?php echo h($post['Post']['image']); ?>" alt=""> -->
+                <!-- イメージを加えるとき　　<img class="img-responsive" src="<?php echo h($post['Post']['image']); ?>" alt=""> -->
+                <?php //echo $this->Html->image($post[][],array("alt" => "",'url' => array('controller' => 'Picture', 'action' => '', 6)))); ?>
+
                 <hr>
+
                 <!-- ここから本文がはじまる -->
                 <p>
-                	<?php echo $post['posts']['body']; ?>
-                	<?php //$this->Form->Link('Read More', array('Controller'=>'post',''=>'')); ?>
-                	<?php echo $this->Html->link('<span class="btn active glyphicon glyphicon-chevron-right">Read More</span>', array('controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
-                	<!-- <a class="btn btn-primary" href="">Read More <span class="glyphicon glyphicon-chevron-right"></span></a> -->
+                	<?php //echo $post['posts']['body']; ?>
+
+	                <div class="text-right">	
+	                	<!-- btn btn-primary active glyphicon glyphicon-thumbs-up -->
+	                	<?php echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
+	                	<!-- <a class="btn btn-primary" href="">Read More <span class="glyphicon glyphicon-chevron-right"></span></a> -->
+
+	                	<?php echo $this->Html->link('<span class="btn btn-primary active glyphicon glyphicon-inbox">あとで見る</span>', array('controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
+
+	                	<?php
+                        echo $this->Form->create();
+                            echo $this->Form->button('<span class=""></span>後で見る' , array('name'=>'Afterlook','value' => 'afterlook','type'=>'submit',
+                            'class'=>'class="btn btn-primary active glyphicon glyphicon-inbox',
+                            'label'=>false,'escape'=>false)); 
+                        echo $this->Form->end();
+                    	?>
+	                </div>
                 </p>
                 
                 <!-- ここで本文がおわる -->

@@ -3,7 +3,7 @@
 // ./app/Controller/CategoriesController.php
 class CategoriesController extends AppController {
 
-    public $helpers = array('Html', 'Form','Session');            // helpersプロパティ
+    public $helpers = array('Html', 'Form','Session','Text');            // helpersプロパティ
     public $uses = array('Post','Category','User','Picture','History'); 
     public $components = array('Session');                        // componentsプロパティ
 
@@ -104,6 +104,8 @@ class CategoriesController extends AppController {
 
         $this->set('category_post', $this->Category->query($sql_category));
 
+
+        $sel_auther = '  ';
 
 
 
