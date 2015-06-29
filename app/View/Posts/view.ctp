@@ -35,7 +35,10 @@
 
                 <!-- Post Content -->
                 <!-- <pre>タグが改行やスペースも反映させている -->
-                <p class="lead"><pre><?php echo $post['Post']['body']; ?></pre></p>
+                <!-- <p class="lead"><pre><?php echo $post['Post']['body']; ?></pre></p> -->
+                <p class="lead"><pre><?php echo $this->Text->autoLink($post['Post']['body']); ?></pre></p>
+
+
                 <p></p>
 
                 <div class="text-right">

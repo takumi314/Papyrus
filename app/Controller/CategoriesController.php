@@ -5,9 +5,27 @@ class CategoriesController extends AppController {
 
     public $helpers = array('Html', 'Form','Session','Text');            // helpersプロパティ
     public $uses = array('Post','Category','User','Picture','History'); 
-    public $components = array('Session');                        // componentsプロパティ
+    public $components = array('Session','Paginator');                        // componentsプロパティ
 
-     public function beforeFilter() {
+    public $paginate = array(
+        'fields' => array('Post.id', 'Post.created'),
+        'limit' => 25,
+        'order' => array(
+            'Post.created' => 'asc'
+        )
+    );
+
+    public function list_recipes() {
+        $this->Paginator->settings = $this->paginate;
+
+        // findAll() に似ていますが、ページ制御された結果を返します。
+        $data = $this->Paginator->paginate('Recipe');
+        debug($data);
+        //$this->set('pages', $data);
+}
+
+
+    public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
         $this->Auth->allow('register','login','categories','index','acount','user_image','view');
