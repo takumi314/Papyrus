@@ -94,7 +94,7 @@
 
                     if(is_null($comment['users']['name'])){ $comment['users']['name'] = 'Guest'; }
 
-                        echo '<h4 class="media-heading">'.$comment['users']['name'].'　' ;
+                        echo '<h4 class="media-heading">'.$comment['users']['name'].'<small>さん</small>　' ;
                         echo    '<small>';
                             echo date('F j, Y', strtotime($comment['comment_user']['created'])).' '.date('g:i A , D', strtotime($comment['comment_user']['created'])); 
                         echo '</small>';

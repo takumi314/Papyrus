@@ -22,7 +22,7 @@ class CategoriesController extends AppController {
         $data = $this->Paginator->paginate('Recipe');
         debug($data);
         //$this->set('pages', $data);
-}
+    }
 
 
     public function beforeFilter() {
@@ -69,41 +69,6 @@ class CategoriesController extends AppController {
 
 
 	public function index() {                                     // indexアクションを呼び出す。
-		// set(); 'categories'という名前でViewにとばす処理を行う。
-        // $this->set('categories', $this->Category->find('all'));   // １番目の'cagtegories'は「View」内での変数名に、２番目の部分は実際のデータのデータとなる。
-        //                                                           // モデルクラスが 'category' なので、アクション内の$this->Category->find('all') という記述によってモデルにアクセスする。
-
-        // // ここからサイドビューの処理を行う。        
-        // $user = $this->Post->query("SELECT * FROM 
-        //                                     (SELECT * FROM `posts` 
-        //                                         GROUP BY `posts`.`created` 
-        //                                         DESC LIMIT 0,5) 
-        //                                 AS `latest` 
-        //                                 RIGHT JOIN `users` 
-        //                                 ON `latest`.`user_id`=`users`.`id` 
-        //                                 limit 0,5;");
-
-        // $this->set('latest5post', $user ) ;        
-                   
-        // $populars = $this->Post->query( "SELECT * FROM 
-        //                                     (SELECT * FROM 
-        //                                         ( SELECT COUNT(*) 
-        //                                             AS 'cnt', `histories`.`post_id` 
-        //                                             FROM `histories` 
-        //                                             GROUP BY `histories`.`post_id` 
-        //                                             ORDER BY 'cnt' 
-        //                                             DESC LIMIT 0,5) 
-        //                                         AS `populars` 
-        //                                         RIGHT JOIN `posts` 
-        //                                         ON `populars`.`post_id` = `posts`.`id` 
-        //                                         limit 0,5) 
-        //                                     AS `writer` 
-        //                                     LEFT JOIN `users` 
-        //                                     ON `users`.`id`=`writer`.`user_id` 
-        //                                     LIMIT 0,5;" 
-        //                                 );        
-        // //debug($populars);
-        // $this->set('populars', $populars);
 
     }                                                             
 
@@ -114,7 +79,18 @@ class CategoriesController extends AppController {
 
         $this->set('category', $this->Category->find('first'));
 
-        $sql_category = 'SELECT * FROM `posts` LEFT JOIN `categories` ON `posts`.`category_id` = `categories`.`id` where category_id ='.$id.';';
+        $sql_category = 'SELECT `post_category`.`id`,`title`,`name`,`post_category`.`user_id`,`category`,`category_id`,`body`,`post_category`.`created`,`posted` 
+                            FROM (SELECT `posts`.`id`, `title`,`body`,`category`,`category_id`,`user_id`,`posts`.`created`,`posted` 
+                                    FROM `posts` 
+                                    LEFT JOIN `categories` 
+                                    ON `posts`.`category_id` = `categories`.`id`) 
+                            AS `post_category` 
+                            LEFT JOIN `users` 
+                            ON `post_category`.`user_id`=`users`.`id` 
+                            WHERE category_id = '.$id.' 
+                            ORDER BY `post_category`.`created` DESC;';
+        
+        //'SELECT * FROM `posts` LEFT JOIN `categories` ON `posts`.`category_id` = `categories`.`id` where category_id ='.$id.';';
         //SELECT * FROM `posts` LEFT JOIN `categories` ON `posts`.`category_id` = `categories`.`id` where category_id = 4
         //$this->Category->query($sql_category);
 
@@ -122,13 +98,9 @@ class CategoriesController extends AppController {
 
         $this->set('category_post', $this->Category->query($sql_category));
 
+        //$sel_auther = '  '; // 投稿記事の筆者名を表示、筆者のプロフィールページのリンクを貼る
 
-        $sel_auther = '  ';
-
-
-
-
-
+        //$this->set('category_post', $this->Category->query($sel_auther));        
 
 
         if (!$id) {
@@ -188,31 +160,23 @@ class CategoriesController extends AppController {
 
 
     public function delete($id) {
-    if ($this->request->is('get')) {
-        throw new MethodNotAllowedException();          // 
+        if ($this->request->is('get')) {
+            throw new MethodNotAllowedException();          // 
+        }
+
+        if ($this->Category->delete($id)) {
+            $this->Session->setFlash(
+                __('The post with id: %s has been deleted.', h($id))
+            );
+        } else {
+            $this->Session->setFlash(
+                __('The post with id: %s could not be deleted.', h($id))
+            );
+        }
+    
+        return $this->redirect(array('action' => 'index'));
+    
     }
-
-    if ($this->Category->delete($id)) {
-        $this->Session->setFlash(
-            __('The post with id: %s has been deleted.', h($id))
-        );
-    } else {
-        $this->Session->setFlash(
-            __('The post with id: %s could not be deleted.', h($id))
-        );
-    }
-
-    return $this->redirect(array('action' => 'index'));
-}
-
-
-
-
-
-
-
-
-
 
 
 }

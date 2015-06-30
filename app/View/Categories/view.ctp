@@ -16,14 +16,16 @@
 
                 <h2>
                     <!-- <a href=""><?php echo $post['posts']['title']; ?></a> -->
-                    <?php echo $this->Html->link('<span></span>'.$post['posts']['title'], array('controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
+                    <?php echo $this->Html->link('<span></span>'.$post['post_category']['title'], array('controller' => 'posts', 'action' => 'view', $post['post_category']['id']),array('escape' => false)); ?>
                 </h2>
                 <p class="lead">
-                    by <a href=" <?php echo $post['User']['name']; ?> "></a>
+                    by <!-- <a href= <?php echo '"'.$post['User']['name'].'"';?> ></a> -->
+                    	<?php echo $this->Html->link('<span></span>'.$post['users']['name'], array('controller' => 'User', 'action' => 'profile', $post['post_category']['user_id']),array('escape' => false)); ?>
+
                 </p>
-                <p><span class="glyphicon glyphicon-time"></span> <?php	echo 'Posted on '.date('F j, Y', strtotime($post['posts']['created'])).' at '.date('g:i A , D', strtotime($post['posts']['created'])); ?></p>
+                <p><span class="glyphicon glyphicon-time"></span> <?php	echo 'Posted on '.date('F j, Y', strtotime($post['post_category']['created'])).' at '.date('g:i A , D', strtotime($post['post_category']['created'])); ?></p>
                 <hr>
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                <img class="img-responsive" src="/papyrus/img/900300.jpg" alt="投稿写真">
                 <!-- イメージを加えるとき　　<img class="img-responsive" src="<?php echo h($post['Post']['image']); ?>" alt=""> -->
                 <?php //echo $this->Html->image($post[][],array("alt" => "",'url' => array('controller' => 'Picture', 'action' => '', 6)))); ?>
 
@@ -32,16 +34,16 @@
                 <!-- ここから本文がはじまる -->
                 <p>
                 	
-                	<?php echo $this->Text->truncate( $post['posts']['body'], 100 , array('ending' => '...')) ;	?>
+                	<?php echo $this->Text->truncate( $post['post_category']['body'], 100 , array('ending' => '...')) ;	?>
                 	<?php //echo $this->Text->autoLink($post['posts']['body']); // 自動でリンクを生成できる ?>
-                	<?php echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
+                	<?php echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['post_category']['id']),array('escape' => false)); ?>
 
 	                <div class="text-right">	
 	                	<!-- btn btn-primary active glyphicon glyphicon-thumbs-up -->
 	                	<?php //echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
 	                	<!-- <a class="btn btn-primary" href="">Read More <span class="glyphicon glyphicon-chevron-right"></span></a> -->
 
-	                	<?php echo $this->Html->link('<span class="btn btn-primary active glyphicon glyphicon-inbox">あとで見る</span>', array('controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
+	                	<?php echo $this->Html->link('<span class="btn btn-primary active glyphicon glyphicon-inbox">あとで見る</span>', array('controller' => 'posts', 'action' => 'view', $post['post_category']['id']),array('escape' => false)); ?>
 
 	                	<?php
                         echo $this->Form->create();
