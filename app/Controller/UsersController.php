@@ -25,21 +25,20 @@ class UsersController extends AppController {
              
         $populars = $this->Post->query( "SELECT * FROM 
                                             (SELECT * FROM 
-                                                ( SELECT COUNT(*) 
+                                                (SELECT COUNT(*) 
                                                     AS 'cnt', `histories`.`post_id` 
                                                     FROM `histories` 
                                                     GROUP BY `histories`.`post_id` 
-                                                    ORDER BY 'cnt' 
-                                                    DESC LIMIT 0,5) 
-                                                AS `populars` 
-                                                RIGHT JOIN `posts` 
-                                                ON `populars`.`post_id` = `posts`.`id` 
-                                                limit 0,5) 
-                                            AS `writer` 
-                                            LEFT JOIN `users` 
-                                            ON `users`.`id`=`writer`.`user_id` 
-                                            LIMIT 0,5;" 
-                                        );        
+                                                    ORDER BY `cnt` 
+                                                    DESC LIMIT 0 , 10) 
+                                            AS `populars` 
+                                            RIGHT JOIN `posts` 
+                                            ON `populars`.`post_id` = `posts`.`id` 
+                                            limit 0,10) 
+                                        AS `writer` 
+                                        LEFT JOIN `users` 
+                                        ON `users`.`id`=`writer`.`user_id` 
+                                        LIMIT 0,5;");        
 
         $this->set('populars', $populars);
 

@@ -56,7 +56,7 @@
 							</div>
 							<div class="form-group">
 								<h4>The First Time to Cebu</h4>
-								<span><?php echo $userStartDate; ?></span>
+								<span><?php echo $user_start_date; ?></span>
 								<?php echo $this->Html->Link('modify',array('controller' => 'users','action' => 'user_start_date')); ?> 
 							</div>
 						</div>

@@ -3,7 +3,7 @@ class PostsController extends AppController {
     
     public $helpers = array('Html', 'Form', 'Session','Time');
     public $components = array('Session','Search.Prg');     //Prgコンポーネントを読み込む。
-    public $uses = array('Post','Category','Afterlook','User','Picture','Comment');        // POSTモデルとCategoryモデルを指定する。
+    public $uses = array('Post','Category','Afterlook','User','Picture','Comment','History');        // POSTモデルとCategoryモデルを指定する。
     public $presetVars = true;                      // Prgコンポーネントのメソッドで利用される変数の事前設定
 
 
@@ -27,21 +27,20 @@ class PostsController extends AppController {
              
         $populars = $this->Post->query( "SELECT * FROM 
                                             (SELECT * FROM 
-                                                ( SELECT COUNT(*) 
+                                                (SELECT COUNT(*) 
                                                     AS 'cnt', `histories`.`post_id` 
                                                     FROM `histories` 
                                                     GROUP BY `histories`.`post_id` 
-                                                    ORDER BY 'cnt' 
-                                                    DESC LIMIT 0,5) 
-                                                AS `populars` 
-                                                RIGHT JOIN `posts` 
-                                                ON `populars`.`post_id` = `posts`.`id` 
-                                                limit 0,5) 
-                                            AS `writer` 
-                                            LEFT JOIN `users` 
-                                            ON `users`.`id`=`writer`.`user_id` 
-                                            LIMIT 0,5;" 
-                                        );        
+                                                    ORDER BY `cnt` 
+                                                    DESC LIMIT 0 , 10) 
+                                            AS `populars` 
+                                            RIGHT JOIN `posts` 
+                                            ON `populars`.`post_id` = `posts`.`id` 
+                                            limit 0,10) 
+                                        AS `writer` 
+                                        LEFT JOIN `users` 
+                                        ON `users`.`id`=`writer`.`user_id` 
+                                        LIMIT 0,5;");        
 
         $this->set('populars', $populars);
 
@@ -59,18 +58,19 @@ class PostsController extends AppController {
 
     public function view($id = null) {
 
-        // コメントの表示
-//        $id = $post[][]
+        // 投稿記事へのコメントを表示
         $sql = "SELECT * FROM (SELECT * FROM `comments`) AS `comment_user` LEFT JOIN `users` ON `comment_user`.`user_id`=`users`.`id` where post_id =".$id;
-//        $all_comments = $this->Comment->query($sql) ;
+        
         $this->set('comments',$this->Comment->query($sql));
         
+        // 各投稿記事の閲覧履歴を記録する。   
+        $save_array = array('post_id' => $id,
+                            'user_id' => $this->Auth->user('id')
+                            );
+        $this->History->save($save_array);
 
-       // debug($all_comments['']);
-
-
-        //$this->set('comments',$this->Comment->find('all'));
-
+       
+        // POSTのエラーチェック
         if (!$id) {
             throw new NotFoundException(__('Invalid post'));   // 実在するレコードにアクセスすることを保証するために少しだけエラーチェックを行います。
         }
