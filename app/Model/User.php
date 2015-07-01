@@ -19,7 +19,7 @@ class User extends AppModel {
         return true;
     }
 
-    // 何かデータが保存されたら必ず実行される
+    // 何かデータが保存されたら必ず実行される。
     public function afterSave($created, $options = array()){
     
         parent::afterSave($created,$options);
