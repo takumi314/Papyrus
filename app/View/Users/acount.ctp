@@ -22,25 +22,26 @@
 							<div class="form-group">
 							
 								<h4>Photo</h4>
-									<div class="media private-profile">
-								        <div class="" href="">
-								        	<?php echo $this->Html->image( $userImage ,array('width'=>'50','height'=>'50','class'=>'media-body pulcambal-left')); ?>
+									<div class="media private-profile text-center">
+								        <div class="text-center" href="" >
+								        	<?php //echo $this->Html->image( '/img/profile_img/'.$userImage ,array('width'=>'180','height'=>'180','class'=>'media-body pulcambal-left')); ?>
+								        	<?php echo $this->Html->image( '/img/profile_img/'.$userImage ,array('width'=>'180','height'=>'180', 'alt'=>'プロフィール画像', 'class'=>'text-center')); ?>								         
 								            <?php //echo $this->Html->image('/img/guest_photo.jpg',array('alt'=>'プロフィール画像')); ?>
 								        </div>
-								       	<div class="media-body pull-left">
+								       	<!-- <div class="media-body pull-left">
 								            <div class="media-content">
 								                <h4></h4>
 								            </div>
-								        </div>                    
+								        </div>      -->               
 								    </div>
-								<span><?php echo $userImage; ?></span>
-
-								<?php echo $this->Html->Link('modify',array('controller' => 'users','action' => 'user_image')); ?>
-							
+								<div class="text-center">
+									<span><?php echo $userImage; ?></span>
+									<?php echo $this->Html->Link('modify',array('controller' => 'users','action' => 'user_image')); ?>
+								</div>
 							</div>
 							<div class="form-group">
 								<h4>Username</h4>
-								<span><?php echo $userName; ?></span>
+								<span><?php echo $userName ; ?></span>
 								<?php echo $this->Html->Link('modify',array('controller' => 'users','action' => 'user_name')); ?>
 							</div>
 							<div class="form-group">
@@ -50,7 +51,7 @@
 	                        </div>
 							<div class="form-group">
 								<h4>Email Preferences</h4>
-								<span><?php echo $userEmail; ?></span>
+								<span><?php echo $userEmail ; ?></span>
 								<?php echo $this->Html->Link('modify',array('controller' => 'users','action' => 'user_email')); ?> 
 							</div>
 							<div class="form-group">

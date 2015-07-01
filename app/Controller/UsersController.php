@@ -63,8 +63,8 @@ class UsersController extends AppController {
     }
 
     public function register() {
-
-        debug($this->request->is('post'));
+        // POSTデータをキャッチしたら「真」とみなす。
+        //debug($this->request->is('post'));
         if ($this->request->is('post')) {
             $this->User->create();
 
@@ -72,6 +72,66 @@ class UsersController extends AppController {
             $this->request->data['User']['start_date'] = $this->request->data['User']['year']['year'].'-'.$this->request->data['User']['month']['month'].'-01';
             //debug($this->request->data);
 
+            // 画像ファイルを縮小・保存する。
+            if (!is_null($this->request->data['User']['imageimage'])) {
+
+                //パラメータよりイメージ情報を取得
+                $image = $this->request->data['User']['imageimage'];
+
+                $this->request->data['User']['image'] = $image['name'];
+                
+                //イメージ保存先パス
+                $img_save_path = IMAGES.DS.'profile_img' ;       //  papyrus/img/profile_img/イメージファイル名
+
+                //イメージの保存処理
+                move_uploaded_file($image['tmp_name'], $img_save_path.DS.$image['name']);
+                
+                ///////////////////////////
+                // 出力する画像サイズの指定 //
+                ///////////////////////////
+                $width = 180;
+                $height = 180;
+
+                // サイズを指定して、背景用画像を生成
+                $canvas = imagecreatetruecolor($width, $height);
+
+                // コピー元画像の指定（元イメージの保存先パス）
+                $targetImage = $img_save_path.DS.$image['name'];
+                //
+                //debug($targetImage);
+                //debug($this->request->data['User']['imageimage']);
+                
+                //ファイル名から、画像インスタンスを生成
+                $image_inst = imagecreatefromjpeg($targetImage);
+                // コピー元画像のファイルサイズを取得
+                list($image_w, $image_h) = getimagesize($targetImage);
+
+                // 背景画像に、画像をコピーする
+                imagecopyresampled($canvas,  // 背景画像
+                                   $image_inst,   // コピー元画像
+                                   0,        // 背景画像の x 座標
+                                   0,        // 背景画像の y 座標
+                                   0,        // コピー元の x 座標
+                                   0,        // コピー元の y 座標
+                                   $width,   // 背景画像の幅
+                                   $height,  // 背景画像の高さ
+                                   $image_w, // コピー元画像ファイルの幅
+                                   $image_h  // コピー元画像ファイルの高さ
+                                  );
+
+                // 画像を出力する
+                imagejpeg($canvas,           // 背景画像
+                          $img_save_path.DS.$image['name'],    // 出力するファイル名（省略すると画面に表示する）
+                          87                // 画像精度（この例だと100%で作成）
+                         );
+
+                //メモリを開放する
+                imagedestroy($canvas);
+
+            }
+
+
+            // フォームデータをサーバーに保存する
             if ($this->User->save($this->request->data)) {                  
                 $this->Session->setFlash(__('登録が完了しました。'));
                 $this->redirect(array('action' => 'login'));
@@ -84,6 +144,12 @@ class UsersController extends AppController {
 
 
     public function acount(){
+
+        //$Account = $this->User->find('first',array('conditions' => array('id' => $this->Auth->user('id') )));
+
+        //$this->set('account', $Account);
+        //debug($Account);
+
         // $this->User->id = $id;
         // $this->set('user', $this->User->find($this->Session->read('id')));
     }
@@ -102,7 +168,7 @@ class UsersController extends AppController {
                                         )
                 ) {
                      $this->Session->setFlash(__('名前の再設定が完了しました'));
-                     $this->redirect(array('Controller' => 'Users','action' => 'acount'));
+                     $this->redirect(array('Controller' => 'users','action' => 'acount'));
                 } else {
                      $this->Session->setFlash(__('保存に失敗しました。再度入力しなおして下さい'));
                 }
@@ -206,25 +272,104 @@ class UsersController extends AppController {
 
     public function user_image() {
 
-        debug($this->Auth->user('id'));
+        //debug($this->Auth->user('id'));
 
         if ($this->request->is('post') || $this->request->is('put')) {
-                if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
-                                                     'image' => $changed_image ) ),
+
+
+            // 画像ファイルを縮小・保存する。
+            if (!is_null($this->request->data['User']['changed_image'])) {
+
+                //パラメータよりイメージ情報を取得
+                $image = $this->request->data['User']['changed_image'];
+
+                //debug($image['name']);
+
+                $this->request->data['User']['image'] = $image['name'];
+
+
+                //イメージ保存先パス
+                $img_save_path = IMAGES.'profile_img' ;       //  papyrus/img/profile_img/イメージファイル名  (.DS.)
+
+                //debug($img_save_path);
+
+                //イメージの保存処理
+                move_uploaded_file($image['tmp_name'], $img_save_path.DS.$image['name']);
+                
+                ///////////////////////////
+                // 出力する画像サイズの指定 //
+                ///////////////////////////
+                $width = 180;
+                $height = 180;
+
+                // サイズを指定して、背景用画像を生成
+                $canvas = imagecreatetruecolor($width, $height);
+
+                // コピー元画像の指定（元イメージの保存先パス）
+                $targetImage = $img_save_path.DS.$image['name'];
+                
+                // //debug($targetImage);
+                // //debug($this->request->data['User']['imageimage']);
+                
+                //ファイル名から、画像インスタンスを生成
+                $image_inst = imagecreatefromjpeg($targetImage);
+                // コピー元画像のファイルサイズを取得
+                list($image_w, $image_h) = getimagesize($targetImage);
+
+                // 背景画像に、画像をコピーする
+                imagecopyresampled($canvas,  // 背景画像
+                                   $image_inst,   // コピー元画像
+                                   0,        // 背景画像の x 座標
+                                   0,        // 背景画像の y 座標
+                                   0,        // コピー元の x 座標
+                                   0,        // コピー元の y 座標
+                                   $width,   // 背景画像の幅
+                                   $height,  // 背景画像の高さ
+                                   $image_w, // コピー元画像ファイルの幅
+                                   $image_h  // コピー元画像ファイルの高さ
+                                  );
+
+                // 元の画像を削除
+                unlink($img_save_path.DS.$this->Auth->user('image'));
+
+                // 画像を出力する
+                imagejpeg($canvas,           // 背景画像
+                          $img_save_path.DS.$image['name'],    // 出力するファイル名（省略すると画面に表示する）
+                          87                // 画像精度（この例だと100%で作成）
+                         );
+
+                //メモリを開放する
+                imagedestroy($canvas);
+
+            }
+
+
+        if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
+                                                     'image' => $this->request->data['User']['image']) ),
                                             false,
                                             array('image')
                                         )
                 ) {
                      $this->Session->setFlash(__('プロフィール写真が変更されました'));
+
+                        // Authの値を更新する。
+                        //$data = array('email' => $this->Auth->user['']);
+                        //$this->Auth->login($data);
+
                      $this->redirect(array('Controller' => 'Users','action' => 'acount'));
                 } else {
-                     $this->Session->setFlash(__('変更に失敗しました。再度試してみてください'));
+                     $this->Session->setFlash(__('変更に失敗しました。再度試してください'));
                 }
-            } else {
-            //     //$this->request->data = $this->User->read(null, $id);
-            //     //unset($this->request->data['User']['password']);
-            }
+        } else {
+        //     //$this->request->data = $this->User->read(null, $id);
+        //     //unset($this->request->data['User']['password']);
+        }
 
+    }
+
+
+    public function user_image_check(){
+        $this->redirect(array('Controller' => 'Users','action' => 'acount'));
     }
 
     public function user_start_date() {

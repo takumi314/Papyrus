@@ -19,6 +19,20 @@ class User extends AppModel {
         return true;
     }
 
+    // 何かデータが保存されたら必ず実行される
+    public function afterSave($created, $options = array()){
+    
+        parent::afterSave($created,$options);
+     
+        //updating authentication session
+        App::uses('CakeSession', 'Model/Datasource');
+        CakeSession::write('Auth',$this->findById(AuthComponent::user('id')));
+     
+        return true;
+
+    }
+
+
 
     public $validate = array(                               // 各項目に対してバリデーションルールを作成する。
         'name' => array(                                // username項目にルールを設定する。
@@ -51,12 +65,26 @@ class User extends AppModel {
         //         'message' => 'はじめてセブに来たのはいつですか？。'            
         //     )
         // ),
-        'imageimage' => array(                                    // date項目にルールを設定する。
-            'required' => array(
-                'message' => 'プロフィール写真をアップロードしてみよう。',
-                'allowEmpty' => True
-            )
-        )
+        'imageimage'=>array(
+             'rule1' => array(
+                //拡張子の指定
+                'rule' => array('extension',array('jpg','jpeg','gif','png')),
+                'message' => '画像ではありません。',
+                 'allowEmpty' => true,
+            ),
+             'rule2' => array(
+                //画像サイズの制限
+                'rule' => array('fileSize', '<=', '2000000'),
+                'message' => '画像サイズは2MB以下でお願いします',
+            )     
+        ),
+
+        // 'imageimage' => array(                                    // date項目にルールを設定する。
+        //     'required' => array(
+        //         'message' => 'プロフィール写真をアップロードしてみよう。',
+        //         'allowEmpty' => True
+        //     )
+        // )
     );
     // ここまでがvalidate  //
 }
