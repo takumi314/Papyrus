@@ -87,32 +87,89 @@ class PostsController extends AppController {
     // app/Controller/PostsController.php
     public function add() {
 
-        $this->set('categories_list', $this->Category->find('all'));
+        $this->set('categories_list', $this->Category->find('all'));    // カテゴリーの一覧を表示させるために$this->set()を行う。
 
         if ($this->request->is('post')) {       // リクエストが HTTP or POST かどうかの確認にCakeRequest::is()メソッドを使用している。
+            
             $this->request->data['Post']['user_id'] = $this->Auth->user('id');      // ユーザーidを代入する
             $this->request->data['Post']['view_count'] = 0;                         // 観覧履歴は０に設定にセット
 
-            //var_dump($this->Category->find['list']);
-            //debug($this->request->data);
-            //$this->set('categories_list',$this->Category->find['list']);
             if ($this->request->data['submitBtn'] == 'post') {
                 $this->request->data['Post']['status'] = 2;  
             } else {
                 $this->request->data['Post']['status'] = 1;  
             } 
 
-            //debug($this->request->data);
-            //var_dump($this->request->data);
+            // photo1の画像を保存する
+            if (!is_null($this->request->data['Post']['photo1'])) {
+                // 画像の処理
+                $img_1 = $this->request->data['Post']['photo1'];
+                //debug($img_1);
+                
+                //イメージ保存先パス
+                $img_save_path = IMAGES.DS.'post_picture' ;       //  papyrus/img/profile_img/イメージファイル名
 
-            if ($this->Post->save($this->request->data)) {                  
+                //イメージの保存処理
+                move_uploaded_file($img_1['tmp_name'], $img_save_path.DS.$img_1['name']);
+                // 画像メモリを解放
+                //imagedestroy($img_1);
+            }
+
+            // photo2の画像を保存する
+            if (!is_null($this->request->data['Post']['photo2'])) {
+                
+                $img_2 = $this->request->data['Post']['photo2'];
+                //debug($img_2);
+                
+                //イメージ保存先パス
+                $img_save_path = IMAGES.DS.'post_picture' ;       //  papyrus/img/profile_img/イメージファイル名
+
+                //イメージの保存処理
+                move_uploaded_file($img_2['tmp_name'], $img_save_path.DS.$img_2['name']);
+                // 画像メモリを解放
+                //imagedestroy($img_2);
+            }
+
+
+            if ($this->Post->save($this->request->data)) {
+
+                $last_id = $this->Post->getLastInsertID();   // 挿入されたレコードのIDを入手。つまり、postテーブルから最新の投稿記事IDを取得する。
+
+                // 画像１データの保存処理を行う 
+                if (isset($this->request->data['Post']['photo1'])) {
+
+                    $save_array1 = array('post_id' => $last_id, 
+                                        'name' => $this->request->data['Post']['photo1']['name'],
+                                        'image_title' => $this->request->data['Post']['photo1title']
+                                        );
+
+                    $this->Picture->save($save_array1);        // Pictureテーブルに保存する。
+                
+                }
+
+                // 画像２データの保存処理を行う
+                if (isset($this->request->data['Post']['photo2'])) {
+
+                    $save_array2 = array('id' => false,                 // 前回のIDを初期化する。 
+                                        'post_id' => $last_id, 
+                                        'name' => $this->request->data['Post']['photo2']['name'],
+                                        'image_title' => $this->request->data['Post']['photo2title']
+                                        );
+                    
+                    //$this->Picture->create(false);          // 2週目からはモデルが同じidをひきずるため、ここで初期化をおこなう。
+                    $this->Picture->save($save_array2);
+
+                }
+
                 // ユーザがフォームを使ってデータをPOSTした場合、その情報は、$this->request->data の中に入る。 
                 $this->Session->setFlash(__('投稿が完了しました'));
                 //  Session->setFlash() メソッドを使ってセッション変数にメッセージをセットすることによって、リダイレクト後のページでこれを表示します。
-                //$this->redirect(array('action' => 'index'));
+                $this->redirect(array('action' => 'index'));
+
             } else {
                 $this->Session->setFlash(__('投稿に失敗しました'));
             }
+        
         }
 
     }
@@ -145,6 +202,7 @@ class PostsController extends AppController {
             $this->request->data = $post;
         }
     }
+
 
 
     public function delete($id) {
