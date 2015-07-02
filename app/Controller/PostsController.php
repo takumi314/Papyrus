@@ -59,13 +59,18 @@ class PostsController extends AppController {
     public function view($id = null) {
 
         // 投稿記事へのコメントを表示
-        $sql = "SELECT * FROM (SELECT * FROM `comments`) AS `comment_user` LEFT JOIN `users` ON `comment_user`.`user_id`=`users`.`id` where post_id =".$id;
-        
+        $sql = "SELECT * FROM (SELECT * FROM `comments`) AS `comment_user` LEFT JOIN `users` ON `comment_user`.`user_id`=`users`.`id` where post_id =".$id;        
         $this->set('comments',$this->Comment->query($sql));
         
-        // 各投稿記事の閲覧履歴を記録する。   
+        // 各投稿記事の閲覧履歴を記録する。
+        $userId = 35;        // ゲストのデフォルト値をID=35とする
+
+        if (!is_null($this->Auth->user('id'))) {
+            $userId = $this->Auth->user('id');
+        }
+
         $save_array = array('post_id' => $id,
-                            'user_id' => $this->Auth->user('id')
+                            'user_id' => $userId
                             );
         $this->History->save($save_array);
 

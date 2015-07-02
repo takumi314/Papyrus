@@ -342,8 +342,15 @@ class UsersController extends AppController {
 
             }
 
+        // ゲストとユーザーを区別する処理
+        $userId = 35; // デフォルト値はゲストとする
 
-        if ( $this->User->save(array('User' => array('id' => $this->Auth->user('id'),
+        if (!is_null($this->Auth->user('id'))) {
+            $userId = $this->Auth->user('id');
+        }
+
+        // 保存処理
+        if ( $this->User->save(array('User' => array('id' => $userId,
                                                      'image' => $this->request->data['User']['image']) ),
                                             false,
                                             array('image')

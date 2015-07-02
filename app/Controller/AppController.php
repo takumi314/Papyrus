@@ -66,6 +66,12 @@ class AppController extends Controller {
     public function beforeFilter() {
         $this->Auth->allow('index', 'login','logout','categories','index','user_email','user_password','user_start_date','user_image','user_name');
     
+
+        if (is_null($this->Auth->user('id'))) {                    // $this->Auth->user('name')がnullかどうかを判別する
+            $this->set('userId',35);                          //「ゲスト」のID UserテーブルのID=35を参照せよ。
+        }else {         
+            $this->set('userId', $this->Auth->user('id'));       // ログイン中ならば、「$userName」をすべてのビューに受け渡す    
+        }
         
         if (is_null($this->Auth->user('name'))) {                    // $this->Auth->user('name')がnullかどうかを判別する
             $this->set('userName','ゲスト');                          // ログアウト中ならば、「ゲスト」をビューに受け渡す

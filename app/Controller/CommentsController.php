@@ -72,7 +72,7 @@ class CommentsController extends AppController {
 
         if ($this->request->is('post')) {       // リクエストが HTTP or POST かどうかの確認にCakeRequest::is()メソッドを使用している。
              
-        debug($this->Auth->user('id'));
+        //debug($this->Auth->user('id'));
 
             if(is_null($this->Auth->user('id')) ){
                 $this->request->data['Comment']['user_id'] = '-1';                     // ゲスト・ユーザーのときはuser_idにs"-1"を代入
@@ -80,7 +80,7 @@ class CommentsController extends AppController {
                 $this->request->data['Comment']['user_id'] = $this->Auth->user('id');  // ユーザーidを代入する
             }
 
-        debug($this->request->data);
+        //debug($this->request->data);
 
             if ($this->Comment->save($this->request->data)) {                  
             //  ユーザがフォームを使ってデータをPOSTした場合、その情報は、$this->request->data の中に入る。 
