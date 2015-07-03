@@ -43,10 +43,12 @@
 
                 <div class="text-right">
                     <?php
-                        echo $this->Form->create();
-                            echo $this->Form->button('<span class=""></span>お気に入り' ,array('name'=>'Favarite','value' => 'favorite','type'=>'submit',
+                        echo $this->Form->create('Favorite', array('url' => array('controller' => 'favorites', 'action' => 'add')));
+                            echo $this->Form->button('<span class=""></span>お気に入り' ,array('name'=>'','value' => '','type'=>'submit',
                             'class'=>'btn btn-primary active glyphicon glyphicon-thumbs-up',
                             'label'=>false,'escape'=>false)); 
+                            //echo $this->Form->hidden('post_id',array('value' => '1')); 
+                            echo $this->Form->hidden('post_id',array('value' => $post['Post']['id'])); 
                         echo $this->Form->end();
                     ?>
                 </div>

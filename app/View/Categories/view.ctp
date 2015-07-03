@@ -43,14 +43,28 @@
 	                	<?php //echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
 	                	<!-- <a class="btn btn-primary" href="">Read More <span class="glyphicon glyphicon-chevron-right"></span></a> -->
 
-	                	<?php echo $this->Html->link('<span class="btn btn-primary active glyphicon glyphicon-inbox">あとで見る</span>', array('controller' => 'posts', 'action' => 'view', $post['post_category']['id']),array('escape' => false)); ?>
+                        <div class="text-right">
+                            <?php
+                            echo $this->Form->create('Afterlook', array('url' => array('controller' => 'afterlooks', 'action' => 'add')));
+                                echo $this->Form->button('<span class=""></span>後で見る' ,array('name'=>'','value' => '','type'=>'submit',
+                                'class'=>'btn btn-primary active glyphicon glyphicon-thumbs-up',
+                                'label'=>false,'escape'=>false)); 
+                                //echo $this->Form->hidden('post_id',array('value' => '1')); 
+                                echo $this->Form->hidden('post_id',array('value' => $post['post_category']['id'])); 
+                            echo $this->Form->end();
+                            ?>
+                        </div>
+
+
+
+	                	<?php echo $this->Html->link('<span class="btn btn-primary active glyphicon glyphicon-inbox">あとで見る</span>', array('controller' => 'afterlooks', 'action' => 'add', $post['post_category']['id']),array('escape' => false)); ?>
 
 	                	<?php
-                        echo $this->Form->create();
-                            echo $this->Form->button('<span class=""></span>後で見る' , array('name'=>'Afterlook','value' => 'afterlook','type'=>'submit',
-                            'class'=>'class="btn btn-primary active glyphicon glyphicon-inbox',
-                            'label'=>false,'escape'=>false)); 
-                        echo $this->Form->end();
+                        //echo $this->Form->create();
+                          //  echo $this->Form->button('<span class=""></span>後で見る' , array('name'=>'Afterlook','value' => 'afterlook','type'=>'submit',
+                          //  'class'=>'class="btn btn-primary active glyphicon glyphicon-inbox',
+                          //  'label'=>false,'escape'=>false)); 
+                        //echo $this->Form->end();
                     	?>
 	                </div>
                 </p>
