@@ -35,7 +35,7 @@
 								        </div>      -->               
 								    </div>
 								<div class="text-center">
-									<span><?php echo $userImage; ?></span>
+									<span><?php //echo $userImage; ?></span>
 									<?php echo $this->Html->Link('modify',array('controller' => 'users','action' => 'user_image')); ?>
 								</div>
 							</div>
@@ -56,7 +56,7 @@
 							</div>
 							<div class="form-group">
 								<h4>The First Time to Cebu</h4>
-								<span><?php echo $user_start_date; ?></span>
+								<span><?php echo $userStartDate; ?></span>
 								<?php echo $this->Html->Link('modify',array('controller' => 'users','action' => 'user_start_date')); ?> 
 							</div>
 						</div>

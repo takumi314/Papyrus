@@ -13,7 +13,7 @@ class FavoritesController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register','login','acount','add');
+        $this->Auth->allow('register','login','logout','delete','add');
 
         // ここからサイドビューを表示する
         $user = $this->Post->query("SELECT * FROM 
@@ -58,12 +58,29 @@ class FavoritesController extends AppController {
     // }
 
     public function view($id = null) {
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        $this->set('user', $this->User->read(null, $id));
+        // ユーザーIDを渡す
+        $id = $this->Auth->user('id');
+
+        //フィールドが存在するかどうかを確認する
+        // if (!$this->Favorite->exists()) {
+        //     throw new NotFoundException(__('現在「お気に入り」はございません'));
+        // }
+        //debug($id);
+        $sql = 'SELECT `myFposts`.`id`,`myFposts`.`post_id`, `myFposts`.`checked`,`myFposts`.`title`,`myFposts`.`user_id`,`users`.`name`, `users`.`image`,`myFposts`.`body`,`myFposts`.`created`, `myFposts`.`posted` 
+                FROM (SELECT `myFavorites`.`id`,`myFavorites`.`post_id`, `myFavorites`.`checked`,`posts`.`title`,`posts`.`user_id`, `posts`.`body`,`posts`.`created`, `posts`.`posted` 
+                        FROM (SELECT * FROM `favorites` 
+                                where user_id = '.$id.' ) 
+                        AS `myFavorites` 
+                        LEFT JOIN `posts` 
+                        ON `myFavorites`.`post_id` = `posts`.`id`) 
+                AS `myFposts` 
+                LEFT JOIN `users` 
+                ON `myFposts`.`user_id` = `users`.`id`;';
+        //debug($this->Favorite->query($sql));
+        $this->set('favorites', $this->Favorite->query($sql));
+        
     }
+
 
 
     public function add() {
@@ -71,15 +88,22 @@ class FavoritesController extends AppController {
         if ($this->request->is('post')) {
             // モデルを初期化する
             $this->Favorite->create();
+
             // お気に入りを押したユーザーIDを取得する
-            $this->request->data['Favorite']['user_id'] = $this->Auth->user('id');
+            if (is_null($this->Auth->user('id'))) {
+                $this->request->data['Favorite']['user_id'] = 35;
+            }else {
+                $this->request->data['Favorite']['user_id'] = $this->Auth->user('id');
+            }
+            
             // お気に入りを押した日時を取得する
             $this->request->data['Favorite']['checked'] = date('Y-m-d-G-i-s');
             //debug($this->request->data);
 
             if ($this->Favorite->save($this->request->data)) {                  
                 $this->Session->setFlash(__('「お気に入り」リストに追加されました'));
-                $this->redirect(array('Controller'=>'posts','action' => 'view'));
+                $this->redirect($this->referer());
+                //$this->redirect(array('Controller'=>'posts','action' => 'view'));
             } else {
                 $this->Session->setFlash(__('「追加に失敗しましt。お手数ですが、もう一度試してみて下さい。'));
             }
@@ -87,20 +111,23 @@ class FavoritesController extends AppController {
     }
 
 
-    // public function delete($id = null) {
-    //     $this->request->onlyAllow('post');
+    public function delete($favorite_id = null,$favorite_title) {
+        $this->request->onlyAllow('post');
+        //debug($favorite_id);
+        
+        $this->Favorite->id = $favorite_id;
 
-    //     $this->User->id = $id;
-    //     if (!$this->User->exists()) {
-    //         throw new NotFoundException(__('Invalid user'));
-    //     }
-    //     if ($this->User->delete()) {
-    //         $this->Session->setFlash(__('User deleted'));
-    //         $this->redirect(array('action' => 'index'));
-    //     }
-    //     $this->Session->setFlash(__('User was not deleted'));
-    //     $this->redirect(array('action' => 'index'));
-    // }
+        if (!$this->Favorite->exists()) {
+            throw new NotFoundException(__('「'.$favorite_title.'」はリストにございません。'));
+        }
+        debug($this->Favorite->id);
+        if ($this->Favorite->delete()) {
+            $this->Session->setFlash(__('「'.$favorite_title.'」はリストから削除されました'));
+            $this->redirect($this->referer());
+        }
+        $this->Session->setFlash(__('「'.$favorite_title.'」は削除されませんでした'));
+        $this->redirect($this->referer());
+    }
 
 //    public function edit($id = null) {
 //        $this->User->id = $id;

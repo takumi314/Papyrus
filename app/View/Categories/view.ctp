@@ -13,18 +13,31 @@
                 <!-- First Blog Post -->
                 <!-- ここから繰り返す、同じカテゴリーの記事をすべて表示する  -->
                 <?php foreach ($category_post as $post): ?>
+                <hr>
 
                 <h2>
                     <!-- <a href=""><?php echo $post['posts']['title']; ?></a> -->
                     <?php echo $this->Html->link('<span></span>'.$post['post_category']['title'], array('controller' => 'posts', 'action' => 'view', $post['post_category']['id']),array('escape' => false)); ?>
                 </h2>
                 <p class="lead">
-                    by <!-- <a href= <?php echo '"'.$post['User']['name'].'"';?> ></a> -->
-                    	<?php echo $this->Html->link('<span></span>'.$post['users']['name'], array('controller' => 'User', 'action' => 'profile', $post['post_category']['user_id']),array('escape' => false)); ?>
-
+                    by <?php echo $this->Html->link('<span></span>'.$post['users']['name'], array('controller' => 'User', 'action' => 'profile', $post['post_category']['user_id']),array('escape' => false)); ?>
                 </p>
+
                 <p><span class="glyphicon glyphicon-time"></span> <?php	echo 'Posted on '.date('F j, Y', strtotime($post['post_category']['created'])).' at '.date('g:i A , D', strtotime($post['post_category']['created'])); ?></p>
                 <hr>
+
+                <div class="text-right">
+                            <?php
+                            echo $this->Form->create('Afterlook', array('url' => array('controller' => 'afterlooks', 'action' => 'add')));
+                                echo $this->Form->button('<span class=""></span>後で見る' ,array('name'=>'','value' => '','type'=>'submit',
+                                'class'=>'btn btn-primary active glyphicon glyphicon-thumbs-up',
+                                'label'=>false,'escape'=>false)); 
+                                //echo $this->Form->hidden('post_id',array('value' => '1')); 
+                                echo $this->Form->hidden('post_id',array('value' => $post['post_category']['id'])); 
+                            echo $this->Form->end();
+                            ?>
+                </div>
+
                 <img class="img-responsive" src="/papyrus/img/900300.jpg" alt="投稿写真">
                 <!-- イメージを加えるとき　　<img class="img-responsive" src="<?php echo h($post['Post']['image']); ?>" alt=""> -->
                 <?php //echo $this->Html->image($post[][],array("alt" => "",'url' => array('controller' => 'Picture', 'action' => '', 6)))); ?>
@@ -38,26 +51,12 @@
                 	<?php //echo $this->Text->autoLink($post['posts']['body']); // 自動でリンクを生成できる ?>
                 	<?php echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['post_category']['id']),array('escape' => false)); ?>
 
-	                <div class="text-right">	
-	                	<!-- btn btn-primary active glyphicon glyphicon-thumbs-up -->
-	                	<?php //echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['posts']['id']),array('escape' => false)); ?>
-	                	<!-- <a class="btn btn-primary" href="">Read More <span class="glyphicon glyphicon-chevron-right"></span></a> -->
 
-                        <div class="text-right">
-                            <?php
-                            echo $this->Form->create('Afterlook', array('url' => array('controller' => 'afterlooks', 'action' => 'add')));
-                                echo $this->Form->button('<span class=""></span>後で見る' ,array('name'=>'','value' => '','type'=>'submit',
-                                'class'=>'btn btn-primary active glyphicon glyphicon-thumbs-up',
-                                'label'=>false,'escape'=>false)); 
-                                //echo $this->Form->hidden('post_id',array('value' => '1')); 
-                                echo $this->Form->hidden('post_id',array('value' => $post['post_category']['id'])); 
-                            echo $this->Form->end();
-                            ?>
-                        </div>
+                        
 
 
 
-	                	<?php echo $this->Html->link('<span class="btn btn-primary active glyphicon glyphicon-inbox">あとで見る</span>', array('controller' => 'afterlooks', 'action' => 'add', $post['post_category']['id']),array('escape' => false)); ?>
+	                	<?php //echo $this->Html->link('<span class="btn btn-primary active glyphicon glyphicon-inbox">あとで見る</span>', array('controller' => 'afterlooks', 'action' => 'add', $post['post_category']['id']),array('escape' => false)); ?>
 
 	                	<?php
                         //echo $this->Form->create();
@@ -66,17 +65,17 @@
                           //  'label'=>false,'escape'=>false)); 
                         //echo $this->Form->end();
                     	?>
-	                </div>
+	                
                 </p>
                 
                 <!-- ここで本文がおわる -->
 
-                
+                <hr>
 
                 <?php endforeach; ?>
                 <!-- ここまでを繰り返す、同じカテゴリーの記事をすべて表示する -->
 
-                <hr>
+                
 
                 <!-- Second Blog Post -->
                <!--  <h2>

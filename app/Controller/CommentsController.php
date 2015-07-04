@@ -10,7 +10,7 @@ class CommentsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register','login','categories','view','add','view');
+        $this->Auth->allow('register','login','categories.view','view','add','view');
 
 
         // ここからサイドビューを表示する
@@ -51,7 +51,7 @@ class CommentsController extends AppController {
 
     public function index() {
 		// set(); 'comments'という名前でPosts/viewにとばす処理を行う。
-        $this->set('comments', $this->Comment->find('all'));
+        $this->set('comments', $this->Comment->find('all',array('order' => array('created' => 'desc'))));
 
     }
     

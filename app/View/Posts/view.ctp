@@ -90,7 +90,7 @@
                 echo '<div class="media">';
                 
                     echo '<a class="pull-left" href="">';
-                        echo $this->Html->image( 'profile_img'.DS.$comment['users']['image'], array('url' => '', 'alt' => 'プロフィール画像', 'class' => 'media-object img-responsive'));
+                        echo $this->Html->image( 'profile_img'.DS.$comment['users']['image'], array('url' => '', 'alt' => 'プロフィール画像', 'class' => 'media-object img-responsive', 'style' => array('width: 74px; height:74px;')));
                         //echo '<img class="media-object img-responsive" src="'.'リンク先'.'"  alt="プロフィール画像">';
                     echo '</a>';
                     echo '<div class="media-body">';

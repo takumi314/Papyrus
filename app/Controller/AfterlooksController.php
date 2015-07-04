@@ -6,7 +6,7 @@ class AfterlooksController extends AppController {
 
     public $helpers = array('Html', 'Form', 'Session','Time');
     //public $components = array('Session','Search.Prg');     //Prgコンポーネントを読み込む。
-    public $uses = array('Afterlook','Post','User','History');        // PostモデルとUserモデル　　　を指定する。
+    public $uses = array('Afterlook','Post','User','History','Category');        // PostモデルとUserモデル　　　を指定する。
     //public $presetVars = true;                      // Prgコンポーネントのメソッドで利用される変数の事前設定
 
 
@@ -57,30 +57,35 @@ class AfterlooksController extends AppController {
     //     $this->set('users', $this->paginate());
     // }
 
-    // public function view($id = null) {
-    //     $this->User->id = $id;
-    //     if (!$this->User->exists()) {
-    //         throw new NotFoundException(__('Invalid user'));
-    //     }
-    //     $this->set('user', $this->User->read(null, $id));
-    // }
+    public function view($id = null) {
+        $this->Afterlook->id = $id;
+        if (!$this->Afterlook->exists()) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $this->set('user', $this->Afterlook->read(null, $id));
+    }
 
 
     public function add() {
         
-        //debug($Afterlook);
         if ($this->request->is('post')) {
             // モデルを初期化する
             $this->Afterlook->create();
-            // お気に入りを押したユーザーIDを取得する
-            $this->request->data['Afterlook']['user_id'] = $this->Auth->user('id');
-            // お気に入りを押した日時を取得する
+            // 「後で見る」を押したユーザーIDを取得する
+            if (is_null($this->Auth->user('id'))) {
+                $this->request->data['Afterlook']['user_id'] = 35;
+            }else {
+                $this->request->data['Afterlook']['user_id'] = $this->Auth->user('id');
+            }
+
+            // 「後で見る」を押した日時を取得する
             $this->request->data['Afterlook']['checked'] = date('Y-m-d-G-i-s');
-            debug($this->request->data);
+            //debug($this->request->data);
 
             if ($this->Afterlook->save($this->request->data)) {                  
                 $this->Session->setFlash(__('「後で見る」リストに追加されました'));
-                //$this->redirect(array('Controller'=>'posts','action' => 'view'));
+                $this->redirect($this->referer());
+                //$this->redirect(array('Controller'=>'categories','action' => 'view',$this->request->data['Afterlook']['post_id']));
             } else {
                 $this->Session->setFlash(__('「追加に失敗しましt。お手数ですが、もう一度試してみて下さい。'));
             }

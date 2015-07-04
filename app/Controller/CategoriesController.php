@@ -28,7 +28,7 @@ class CategoriesController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register','login','categories','index','acount','user_image','view');
+        $this->Auth->allow('register','login','logout','index','view');
 
 
         // ここからサイドビューを表示する
@@ -79,7 +79,7 @@ class CategoriesController extends AppController {
         $this->set('category', $this->Category->find('first'));
 
         $sql_category = 'SELECT `post_category`.`id`,`title`,`name`,`post_category`.`user_id`,`category`,`category_id`,`body`,`post_category`.`created`,`posted` 
-                            FROM (SELECT `posts`.`id`, `title`,`body`,`category`,`category_id`,`user_id`,`posts`.`created`,`posted` 
+                            FROM (SELECT `posts`.`id`, `posts`.`title`,`posts`.`body`,`categories`.`category`,`posts`.`category_id`,`user_id`,`posts`.`created`,`posts`.`posted` 
                                     FROM `posts` 
                                     LEFT JOIN `categories` 
                                     ON `posts`.`category_id` = `categories`.`id`) 
@@ -96,6 +96,10 @@ class CategoriesController extends AppController {
         //debug($this->Category->query($sql_category));
 
         $this->set('category_post', $this->Category->query($sql_category));
+
+        // $sql_picture = '    ';
+
+        // $this->set('category_picture', $this->Picture->query($sql_picture));
 
         //$sel_auther = '  '; // 投稿記事の筆者名を表示、筆者のプロフィールページのリンクを貼る
 

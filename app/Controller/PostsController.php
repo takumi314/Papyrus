@@ -10,7 +10,7 @@ class PostsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();                         // 
     // ユーザー自身による登録とログインを許可する
-        $this->Auth->allow('register','login','categories','index','acount','user_image','view');
+        $this->Auth->allow('register','login','index','view');
 
 
         // ここからサイドビューを表示する
