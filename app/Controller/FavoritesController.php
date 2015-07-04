@@ -148,6 +148,16 @@ class FavoritesController extends AppController {
 //    }
 
     
+    public function isAuthorized($user) {
+       // 登録済ユーザーは変更できる
+        if ($this->action === 'view') {
+            return true;
+        }
+
+
+            return parent::isAuthorized($user);
+    
+    }
 
 
 }

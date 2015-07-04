@@ -65,7 +65,7 @@ class AppController extends Controller {
 
     public function beforeFilter() {
 
-        $this->Auth->allow('view','index');
+        $this->Auth->allow('posts.view','categories.view','index');
         //$this->Auth->allow('login','logout','categories.view','posts.view','register','Afterlook.add');
         //$this->Auth->allow('index', 'login','logout','categories','index','user_email','user_password','user_start_date','user_image','user_name');
     
@@ -86,9 +86,9 @@ class AppController extends Controller {
   
         if ($this->Auth->user('image') == '-1' || is_null($this->Auth->user('image')) ) {
             
-            $image = $this->User->find('first', array('fields'=>array('image'),'conditions'=>array('id'=>'35')));
+            $imageAuth = $this->User->find('first', array('fields'=>array('image'),'conditions'=>array('id'=>'35')));
             //debug($image);
-            $this->set('userImage', $image['User']['image']         );
+            $this->set('userImage', $imageAuth['User']['image']         );
             //$this->set('userImage','プロフィール写真');
         } else {
             $this->set('userImage',$this->Auth->user('image'));      // ユーザー情報imageをすべてのビューに受け渡す

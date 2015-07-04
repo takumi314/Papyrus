@@ -418,23 +418,23 @@ class UsersController extends AppController {
     }    
 
 
-    public function edit($id = null) {
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('再設定が完了しました'));
-                $this->redirect(array('Controller' => 'Users','action' => 'acount'));
-            } else {
-                $this->Session->setFlash(__('保存に失敗しました。再度入力しなおして下さい'));
-            }
-        } else {
-            $this->request->data = $this->User->read(null, $id);
-            unset($this->request->data['User']['password']);
-        }
-    }
+    // public function edit($id = null) {
+    //     $this->User->id = $id;
+    //     if (!$this->User->exists()) {
+    //         throw new NotFoundException(__('Invalid user'));
+    //     }
+    //     if ($this->request->is('post') || $this->request->is('put')) {
+    //         if ($this->User->save($this->request->data)) {
+    //             $this->Session->setFlash(__('再設定が完了しました'));
+    //             $this->redirect(array('Controller' => 'Users','action' => 'acount'));
+    //         } else {
+    //             $this->Session->setFlash(__('保存に失敗しました。再度入力しなおして下さい'));
+    //         }
+    //     } else {
+    //         $this->request->data = $this->User->read(null, $id);
+    //         unset($this->request->data['User']['password']);
+    //     }
+    // }
 
     // アカウントの削除処理
     public function delete($id = null) {
@@ -474,7 +474,47 @@ class UsersController extends AppController {
 
 
 
+    public function isAuthorized($user) {
+       // 登録済ユーザーは変更できる
+        if ($this->action === 'acount') {
+            return true;
+        }
 
+        if ($this->action === 'user_name') {
+            return true;
+        }
+
+        if ($this->action === 'user_email') {
+            return true;
+        }
+
+        if ($this->action === 'user_password') {
+            return true;
+        }
+
+        if ($this->action === 'user_image') {
+            return true;
+        }
+
+        if ($this->action === 'user_start_date') {
+            return true;
+        }
+
+
+
+
+        // // 投稿のオーナーは編集や削除ができる
+        // if (in_array($this->action, array('edit', 'delete'))) {
+        //     $postId = (int) $this->request->params['pass'][0];
+        //     if ($this->Post->isOwnedBy($postId, $user['id'])) {
+        //         return true;
+        //     }
+        // }
+
+            return parent::isAuthorized($user);
+    
+    }
+    
 
 
 
