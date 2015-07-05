@@ -25,7 +25,7 @@
 									<div class="media private-profile text-center">
 								        <div class="text-center" href="" >
 								        	<?php //echo $this->Html->image( '/img/profile_img/'.$userImage ,array('width'=>'180','height'=>'180','class'=>'media-body pulcambal-left')); ?>
-								        	<?php echo $this->Html->image( '/img/profile_img/'.$userImage ,array('width'=>'180','height'=>'180', 'alt'=>'プロフィール画像', 'class'=>'text-center')); ?>								         
+								        	<?php echo $this->Html->image( '/img/profile_img/'.$userImage ,array('width'=>'180','height'=>'180', 'alt'=>'プロフィール画像', 'class'=>'text-center img-circle')); ?>								         
 								            <?php //echo $this->Html->image('/img/guest_photo.jpg',array('alt'=>'プロフィール画像')); ?>
 								        </div>
 								       	<!-- <div class="media-body pull-left">

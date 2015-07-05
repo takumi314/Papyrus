@@ -1,7 +1,7 @@
 <?php
 class Post extends AppModel {
 
-	public $belongsTo = array('Category','User');		// Categoryモデルからカテゴリーのデータを参照する。（アソシエーション）
+	public $belongsTo = array('Category','User','Picture');		// Categoryモデルからカテゴリーのデータを参照する。（アソシエーション）
 																// Userモデルからユーザーのデータを参照する。（アソシエーション）
 																// Pictureモデルから画像のファイル名を参照する
 	public function isOwnedBy($post, $user) {

@@ -1,7 +1,6 @@
 
 
-<h1>投稿記事</h1> -->
-
+<h1>投稿記事</h1> 
 <div>
 	<div class="col-lg-8">
 
@@ -23,13 +22,14 @@
                 <hr>
 
                 <!-- Preview Image -->
-                <img class="img-responsive" src="<?php //echo  ;?>" alt="投稿画像" style="height: 300px; width: 900px;">
+                <?php foreach ($pictures as $pic): ?>
+                <img class="img-responsive" src="<?php echo '/papyrus/img/post_picture/'.$pic['pictures']['name'] ;?>" alt="投稿画像" style="">
+                <?php endforeach; ?>
 
                 <hr>
 
                 <!-- Post Content -->
                 <!-- <pre>タグが改行やスペースも反映させている -->
-                <!-- <p class="lead"><pre><?php echo $post['Post']['body']; ?></pre></p> -->
                 <p class="lead"><pre><?php echo $this->Text->autoLink($post['Post']['body']); ?></pre></p>
 
 
@@ -84,7 +84,7 @@
                 echo '<div class="media">';
                 
                     echo '<a class="pull-left" href="">';
-                        echo $this->Html->image( 'profile_img'.DS.$comment['users']['image'], array('url' => '', 'alt' => 'プロフィール画像', 'class' => 'media-object img-responsive', 'style' => array('width: 74px; height:74px;')));
+                        echo $this->Html->image( 'profile_img'.DS.$comment['users']['image'], array('url' => '', 'alt' => 'プロフィール画像', 'class' => 'media-object img-responsive img-circle', 'style' => array('width: 74px; height:74px;')));
                         //echo '<img class="media-object img-responsive" src="'.'リンク先'.'"  alt="プロフィール画像">';
                     echo '</a>';
                     echo '<div class="media-body">';
@@ -97,7 +97,7 @@
                         echo '</small>';
                         echo '</h4>';
                         //　ここからコメントの表示
-                        echo $comment['comment_user']['comment'];
+                        echo $this->Text->autoLink($comment['comment_user']['comment']);
                         
                     echo '</div>';
                 

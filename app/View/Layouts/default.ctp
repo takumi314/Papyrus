@@ -119,6 +119,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				            <!-- <li><a href="">Login</a></li> -->
 				            <li><?php echo $this->Html->link("Login", array('controller' => 'users', 'action' => 'login')); ?></li>
 				            <li><?php echo $this->Html->link("お気に入り", array('controller' => 'favorites','action' => 'view')); ?></li>  
+				            <li><?php echo $this->Html->link("投稿履歴", array('controller' => 'posts','action' => 'mypost')); ?></li>
 				            <li><?php echo $this->Html->link("編集・削除", array('controller' => 'posts','action' => 'edit')); ?></li>
 				            <li><?php echo $this->Html->link("Logout", array('controller' => 'users','action' => 'logout')); ?></li>
 				            <li class="divider"></li>
