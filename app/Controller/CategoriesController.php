@@ -78,8 +78,8 @@ class CategoriesController extends AppController {
 
         $this->set('category', $this->Category->find('first'));
 
-        $sql_category = 'SELECT `post_category`.`id`,`title`,`name`,`post_category`.`user_id`,`category`,`category_id`,`body`,`post_category`.`created`,`posted` 
-                            FROM (SELECT `posts`.`id`, `posts`.`title`,`posts`.`body`,`categories`.`category`,`posts`.`category_id`,`user_id`,`posts`.`created`,`posts`.`posted` 
+        $sql_category = 'SELECT `post_category`.`id`,`title`,`name`,`post_category`.`user_id`,`category`,`category_id`,`body`,`post_category`.`created`,`posted`, `post_category`.`modified` 
+                            FROM (SELECT `posts`.`id`, `posts`.`title`,`posts`.`body`,`categories`.`category`,`posts`.`category_id`,`user_id`,`posts`.`created`,`posts`.`posted`,`posts`.`modified` 
                                     FROM `posts` 
                                     LEFT JOIN `categories` 
                                     ON `posts`.`category_id` = `categories`.`id`) 
@@ -87,15 +87,23 @@ class CategoriesController extends AppController {
                             LEFT JOIN `users` 
                             ON `post_category`.`user_id`=`users`.`id` 
                             WHERE category_id = '.$id.' 
-                            ORDER BY `post_category`.`created` DESC;';
+                            ORDER BY `post_category`.`modified` 
+                            DESC;' ;
         
         //'SELECT * FROM `posts` LEFT JOIN `categories` ON `posts`.`category_id` = `categories`.`id` where category_id ='.$id.';';
         //SELECT * FROM `posts` LEFT JOIN `categories` ON `posts`.`category_id` = `categories`.`id` where category_id = 4
         //$this->Category->query($sql_category);
 
+        $category_post = $this->Category->query($sql_category);
+
+        // $post_id = category_post[]
+
+        // $sql_pic = '';
+
         //debug($this->Category->query($sql_category));
 
-        $this->set('category_post', $this->Category->query($sql_category));
+        $this->set('category_post', $category_post);
+        //$this->set('category_pic', $this->Category->query($sql_pic));
 
         // $sql_picture = '    ';
 

@@ -208,7 +208,8 @@ class PostsController extends AppController {
         //$post = $this->Post->find('all',array('conditons'=>array('user_id' => $id ) )); 
 
         if (!$post) {
-            throw new NotFoundException(__('記事が投稿されておりません'));   // 実在するレコードにアクセスすることを保証するために少しだけエラーチェックを行います。
+            throw new NotFoundException(__('投稿された記事はありません'));   // 実在するレコードにアクセスすることを保証するために少しだけエラーチェックを行います。
+        
         }
 
         //debug($post);
@@ -230,7 +231,7 @@ class PostsController extends AppController {
             $pc_sql = 'SELECT * FROM `pictures` where post_id = '.$id.';'; 
             $pic = $this->Picture->query($pc_sql);
             
-            //debug($post);
+            //debug($pic);
             //ビューに渡す
             $this->set('post', $post);
             $this->set('pic', $pic);
@@ -278,9 +279,12 @@ class PostsController extends AppController {
                     unlink($img_save_path.DS.$pic[0]['pictures']['name']);
                 }
 
+        //debug($this->request->data['Post']['photo1id']);
                 // 新規 or 変更
                 if ( $this->request->data['Post']['photo1id'] =='' ) {
                     
+                    if ( isset($this->request->data['Post']['photo1']['name']) ) {
+                        
                         //イメージの保存処理
                         move_uploaded_file($img_1['tmp_name'], $img_save_path.DS.$img_1['name']);
                        
@@ -294,6 +298,8 @@ class PostsController extends AppController {
                                             );
 
                         $this->Picture->save($save_array1);        // Pictureテーブルに保存する。  
+
+                    }
 
                 } else {
 
@@ -312,11 +318,11 @@ class PostsController extends AppController {
                                                 //'image_title' => $this->request->data['Post']['photo1title']
                                             );
 
-                        $this->Picture->save($save_array1);        // Pictureテーブルに保存する。              
+                        //$this->Picture->save($save_array1);        // Pictureテーブルに保存する。              
                     }
 
                     // イメージ名の変更
-                    if (isset($this->request->data['Post']['photo1title'])) {
+                    if (isset($this->request->data['Post']['photo1title']) ) {
 
                         //画像１タイトルの保存処理を行う 
                         $save_array1 = array('id' => $this->request->data['Post']['photo1id'],
@@ -332,13 +338,13 @@ class PostsController extends AppController {
                 }
 
                 //画像メモリを解放
-                imagedestroy($img_1);
+                //imagedestroy($img_1);
 
             }
 
 
             // photo2の画像・タイトルを変更する
-            if (isset($this->request->data['Post']['photo2']) || isset($this->request->data['Post']['photo2title']) ) {
+            if (isset($this->request->data['Post']['photo2']) || $this->request->data['Post']['photo2title'] != ''  ) {
                 // 画像の処理
                 $img_2 = $this->request->data['Post']['photo2'];
                 
@@ -357,6 +363,8 @@ class PostsController extends AppController {
                 // 新規 or 変更
                 if ( $this->request->data['Post']['photo2id'] == '' ) {
                 
+                    if ( isset($this->request->data['Post']['photo2']['name']) ) {
+                        
                         //イメージの保存処理
                         move_uploaded_file($img_2['tmp_name'], $img_save_path.DS.$img_2['name']);
                        
@@ -370,6 +378,8 @@ class PostsController extends AppController {
                                             );
 
                         $this->Picture->save($save_array2);        // Pictureテーブルに保存する。
+
+                    }
 
                 } else {
                     
@@ -407,7 +417,7 @@ class PostsController extends AppController {
                     }
                 }
                 //画像メモリを解放
-                imagedestroy($img_2);
+                //imagedestroy($img_2);
             }
 
 
@@ -444,7 +454,7 @@ class PostsController extends AppController {
             // 更新する項目（フィールド指定）
             //$fields = array('id','title','body','category_id','modified','status');
              
-            $this->request->data['Post']['modified'] = date('Y-m-d-G-i-s');
+            //$this->request->data['Post']['modified'] = date('Y-m-d-G-i-s');
 
             // 投稿記事を更新する
             if ($this->Post->save($this->request->data)) {
@@ -454,12 +464,16 @@ class PostsController extends AppController {
                 // ユーザがフォームを使ってデータをPOSTした場合、その情報は、$this->request->data の中に入る。 
                 $this->Session->setFlash(__('変更されました'));
                 //  Session->setFlash() メソッドを使ってセッション変数にメッセージをセットすることによって、リダイレクト後のページでこれを表示します。
-                $this->redirect(array('Controller' =>'posts','action' => 'view',$id));
+                //debug();
+                //return $this->redirect(array('controller' =>'Posts','action' => 'view',$id));
 
             } else {
                 $this->Session->setFlash(__('変更に失敗しました'));
-                $this->redirect($this->referer());
+                //$this->redirect($this->referer());
             }    
+                
+                return $this->redirect(array('controller' =>'posts','action' => 'view', $id));
+                //return $this->redirect(array());
         }
 
 
@@ -492,24 +506,29 @@ class PostsController extends AppController {
 
 
 
-    // public function delete($id) {
-    //     if ($this->request->is('get')) {
-    //         throw new MethodNotAllowedException();          // 
-    //     }
-
-    //     if ($this->Post->delete($id)) {
-    //         $this->Session->setFlash(
-    //             __('The post with id: %s has been deleted.', h($id))
-    //         );
-    //     } else {
-    //         $this->Session->setFlash(
-    //             __('The post with id: %s could not be deleted.', h($id))
-    //         );
-    //     }
-
-    //     return $this->redirect(array('action' => 'index'));
+    public function delete($id, $title) {
         
-    // }
+        if ($this->request->is('get')) {
+            throw new MethodNotAllowedException();          // 
+        }
+        //debug($id);
+        //削除処理
+        if ($this->Post->delete($id)) {
+            //投稿記事IDに一致する画像を検索、削除する
+            $this->Picture->deleteAll(array( 'post_id' => $id ),false,true);
+
+            $this->Session->setFlash( 
+                __( '"'.$title.'"は削除されました。') 
+            );
+        } else {
+            $this->Session->setFlash(
+                __('The post with id: %s could not be deleted.', h($id))
+            );
+        }
+
+        return $this->redirect(array('Controller' => 'Posts','action' => 'mypost'));
+        
+    }
 
 
 

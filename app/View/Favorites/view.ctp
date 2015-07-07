@@ -68,7 +68,7 @@
 
 
 
-
+<!-- 
 <div class="container">
 <?php foreach ($favorites as $favorite): ?>
  	<div class="btn-group btn-group-justified" role="group" aria-label="Justified button group with nested dropdown">
@@ -99,5 +99,5 @@
     </div>
 <?php endforeach; ?>
 </div>
-
+ -->
 

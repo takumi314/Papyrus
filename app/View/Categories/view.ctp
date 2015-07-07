@@ -23,7 +23,7 @@
                     by <?php echo $this->Html->link('<span></span>'.$post['users']['name'], array('controller' => 'User', 'action' => 'profile', $post['post_category']['user_id']),array('escape' => false)); ?>
                 </p>
 
-                <p><span class="glyphicon glyphicon-time"></span> <?php	echo 'Posted on '.date('F j, Y', strtotime($post['post_category']['created'])).' at '.date('g:i A , D', strtotime($post['post_category']['created'])); ?></p>
+                <p><span class="glyphicon glyphicon-time"></span> <?php echo 'Posted on '.date('F j, Y', strtotime($post['post_category']['created'])).' at '.date('g:i A , D', strtotime($post['post_category']['created'])); ?></p>
                 <hr>
 
                 <div class="text-right">
@@ -38,20 +38,42 @@
                             ?>
                 </div>
 
-                <img class="img-responsive" src="/papyrus/img/900300.jpg" alt="投稿写真">
-                <!-- イメージを加えるとき　　<img class="img-responsive" src="<?php echo h($post['Post']['image']); ?>" alt=""> -->
+                <div class="media">
+                    <div class="media-left media-middle">
+                    <a href="#">
+                        <?php //echo $this->Html-> ?>
+                        <img class="media-object img-responsive" src="/papyrus/img/900300.jpg" alt="投稿写真" >
+                    </a>
+                    </div>
+                    <div class="media-body">
+                    <!-- <h4 class="media-heading">Media heading</h4> -->
+                    <p>
+                        <?php echo $this->Text->truncate( $post['post_category']['body'], 100 , array('ending' => '...')) ; ?>
+                        <?php //echo $this->Text->autoLink($post['posts']['body']); // 自動でリンクを生成できる ?>
+                        <?php echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['post_category']['id']),array('escape' => false)); ?>
+                    </p>
+                  </div>
+                </div>
+
+                <hr>
+
+
+                
+
+                <!-- <img class="img-responsive" src="/papyrus/img/900300.jpg" alt="投稿写真">
+ -->                <!-- イメージを加えるとき　　<img class="img-responsive" src="<?php echo h($post['Post']['image']); ?>" alt=""> -->
                 <?php //echo $this->Html->image($post[][],array("alt" => "",'url' => array('controller' => 'Picture', 'action' => '', 6)))); ?>
 
                 <hr>
 
                 <!-- ここから本文がはじまる -->
-                <p>
+<!--                 <p>
                 	
                 	<?php echo $this->Text->truncate( $post['post_category']['body'], 100 , array('ending' => '...')) ;	?>
                 	<?php //echo $this->Text->autoLink($post['posts']['body']); // 自動でリンクを生成できる ?>
                 	<?php echo $this->Html->link('<span></span>Read More', array('class'=>'class="btn btn-primary active glyphicon glyphicon-chevron-right"','controller' => 'posts', 'action' => 'view', $post['post_category']['id']),array('escape' => false)); ?>
 
-
+ -->
                         
 
 
@@ -66,7 +88,7 @@
                         //echo $this->Form->end();
                     	?>
 	                
-                </p>
+                <!-- </p> -->
                 
                 <!-- ここで本文がおわる -->
 

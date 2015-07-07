@@ -112,6 +112,7 @@ class FavoritesController extends AppController {
 
 
     public function delete($favorite_id = null,$favorite_title) {
+
         $this->request->onlyAllow('post');
         //debug($favorite_id);
         
@@ -120,13 +121,17 @@ class FavoritesController extends AppController {
         if (!$this->Favorite->exists()) {
             throw new NotFoundException(__('「'.$favorite_title.'」はリストにございません。'));
         }
+
         debug($this->Favorite->id);
         if ($this->Favorite->delete()) {
             $this->Session->setFlash(__('「'.$favorite_title.'」はリストから削除されました'));
             $this->redirect($this->referer());
+        }else {
+
+            $this->Session->setFlash(__('「'.$favorite_title.'」は削除されませんでした'));
+            $this->redirect($this->referer());
         }
-        $this->Session->setFlash(__('「'.$favorite_title.'」は削除されませんでした'));
-        $this->redirect($this->referer());
+
     }
 
 //    public function edit($id = null) {

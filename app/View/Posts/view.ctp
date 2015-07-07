@@ -1,5 +1,3 @@
-
-
 <h1>投稿記事</h1> 
 <div>
 	<div class="col-lg-8">

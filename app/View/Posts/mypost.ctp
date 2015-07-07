@@ -1,6 +1,4 @@
 <!-- File: /app/View/Posts/mypost.ctp -->
-
-
 <ul id="blog">
 	<li>
 		<a href="">これまでに投稿した記事</a>
@@ -20,6 +18,7 @@
             <!-- <th>投稿者</th> -->
             <th>作成日</th>
             <th>投稿日</th>
+            <th>変更日</th>
             <th></th>
         </tr>
     </thead>
@@ -54,17 +53,22 @@
 		      <!--   </div> -->
 		      <!--   <div class="btn-group" role="group"> -->
 		            <td>
+		                <?php echo $mypost['posts']['modified']; ?>
+		            </td>
+		            <td>
 		            	<?php 
 		            			$mypost_id = $mypost['posts']['id'];
 		            			$mypost_title = $mypost['posts']['title'];
 		            			echo $this->form->postLink('delete ×  ', 
-		            			array('action' => 'delete', $mypost_id ,$mypost_title), 
-		            			array(), 
-		            			'Are you sure?'); 
+									            			array('action' => 'delete', $mypost_id, $mypost_title ), 
+									            			array(), 
+									            			'"'.$mypost['posts']['title'].'"を削除しますか ?'
+									            		); 
 		            	
 		            			echo $this->Html->link('Edit', 
-		            			array('action' => 'edit', $mypost_id), 
-		            			array()); 
+								            			array('action' => 'edit', $mypost_id), 
+								            			array()
+								            		); 
 		            	?>
 
 
